@@ -41,11 +41,13 @@ public class Game {
                     while (exitMenu) {
                         while (choice < 1 || choice > 2) {  // Looping the exit menu until the user makes a
                             gameHelper.menuClearScreen();     // correct choice. Must press 1 or 2.
-                            System.out.println("You want to exit the game?");
-                            System.out.println("1 - Yes");
-                            System.out.println("2 - No");
+                            System.out.println("""
+                                                ------------------------
+                                                |      EXIT GAME       |
+                                                ------------------------
+                                                # |1| - Yes.
+                                                # |2| - No.""");
                             try {
-                                System.out.println("You must enter a number between 1-2.");
                                 System.out.println("Enter an option: ");
                                 choice = input.nextInt();
                             } catch (Exception e) {
@@ -67,6 +69,7 @@ public class Game {
             }
         }
     }
+
     //Method to start the real game.
     public void startGame(){
 
@@ -138,7 +141,6 @@ public class Game {
     public void playerMenu(Player player, int turn){
 
         Scanner input = new Scanner(System.in);
-        Store store = new Store();
         boolean realGameMenu = true;
 
         while(realGameMenu) {
@@ -171,28 +173,16 @@ public class Game {
             }
 
             switch (choice) {
-
-                case 1 -> {
-                    //store.buyAnimal(player);
-                }
-                case 2 -> {
-                    //store.buyFood(player);
-                }
-                case 3 -> {
-                    //player.breedAnimal(player, player.playerAnimal);
-                }
-                case 4 -> {
-                    //player.feedAnimal(player);
-                }
-                case 5 -> {
-                    System.out.println("1");
-                }
+                case 1 -> {}
+                case 2 -> {}
+                case 3 -> {}
+                case 4 -> {}
+                case 5 -> {}
                 case 6 -> realGameMenu = false;
                 case 0 -> {
                     realGameMenu = false;
                     setForEach(false);
                 }
-
             }
         }
     }
