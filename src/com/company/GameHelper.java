@@ -1,5 +1,6 @@
 package com.company;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -36,6 +37,20 @@ public class GameHelper {
         System.out.println("\n");
         System.out.println("Press ENTER to continue:");
         scanner.nextLine();
+    }
+
+    public int tryCatch(int num1, int num2){
+        Scanner input = new Scanner(System.in);
+        int choice = -1;
+        while (choice < num1 || choice > num2) {
+            try {
+                System.out.println("Enter an option: ");
+                choice = input.nextInt();
+            } catch (Exception e) {
+                System.out.println("You must enter a number in the menu.");
+                input.next();
+            }
+        }return choice;
     }
 }
 

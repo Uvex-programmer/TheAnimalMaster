@@ -139,15 +139,13 @@ public class Game {
         }
     }
     public void playerMenu(Player player, int turn){
-
+        Store store = new Store();
         Scanner input = new Scanner(System.in);
         boolean realGameMenu = true;
 
         while(realGameMenu) {
 
             System.out.println("\n".repeat(20));
-            //player.getFood();
-            //player.getPlayerAnimal();
             System.out.println("\nIt's now round: " + turn);
             System.out.println(player.getName() + "'s turn!\n");
             System.out.println("""
@@ -173,7 +171,7 @@ public class Game {
             }
 
             switch (choice) {
-                case 1 -> {}
+                case 1 -> store.buyAnimals(player);
                 case 2 -> {}
                 case 3 -> {}
                 case 4 -> {}
