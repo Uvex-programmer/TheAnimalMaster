@@ -10,19 +10,6 @@ public class GameMenus {
 
     }
 
-    public void chooseRounds(){
-        Scanner input = new Scanner(System.in);
-        int choice;
-        do {
-            System.out.println("Enter how many rounds you wanna play. Must be 5-30 rounds.");
-            System.out.print("Enter rounds: ");
-            while (!input.hasNextInt()) { // Checks so the user inputs an integer.
-                System.out.println("Must enter a number in the menu!");
-                input.next();
-            }choice = input.nextInt();
-        }while (choice < 1 || choice > 3); // If the user choose a number that's not 5-30, loop again.
-    }
-
     //Method that only contains a text of how the game works.
     public void gameInfo(){
         menuClearScreen();
@@ -50,5 +37,5 @@ public class GameMenus {
         System.out.println("Press ENTER to continue:");
         scanner.nextLine();
     }
-
 }
+

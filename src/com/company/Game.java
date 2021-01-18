@@ -102,14 +102,17 @@ public class Game {
             String name = myScanner.next();
             players.add(new Player(name));
         }
-
-
-        System.out.println("\n".repeat(15) + "<--- Here is the players --->");
+        // Putting out some game info from what the user has entered before.
+        gameMenu.menuClearScreen();
+        System.out.println("# GAME INFO #");
+        System.out.println("Number of rounds = " + numberOfTurns);
         int playerNumber = 1;
         for(Player player: players){
             System.out.println("Player " + playerNumber + ": " + player.getName());
             playerNumber++;
         }
-        
+        System.out.println("\n" + players.get(0).getName() + " will start the first round!");
+        System.out.println("May the best player win!");
+        gameMenu.menuHelper();
     }
 }
