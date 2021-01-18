@@ -3,10 +3,10 @@ package com.company;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class GameMenus {
+public class GameHelper {
     //Here is where I will put the menus for the start of the game.
     //Will take in information as how the player wants to setup the game.
-    public GameMenus() {
+    public GameHelper() {
 
     }
 
