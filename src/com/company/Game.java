@@ -152,16 +152,14 @@ public class Game {
                                 --------------------------------
                                 |          THE GAME            |
                                 --------------------------------
-                                #   |1| - Animal store.        #
-                                #   |2| - Food store.          #
-                                #   |3| - Breed.               # 
-                                #   |4| - Feed animal.         #
-                                #   |5| - Sell animals.        #   
-                                #   |6| - Done, next player.   #
+                                #   |1| - The Store.           #
+                                #   |2| - Breed.               # 
+                                #   |3| - Feed animal.         #
+                                #   |4| - Done, next player.   #
                                 #                              #
                                 #   |0| - Exit to main menu.   #""");
             int choice = -1;
-            while (choice > 6 || choice < 0) {
+            while (choice > 4 || choice < 0) {
                 try {
                     System.out.println("Enter an option: ");
                     choice = input.nextInt();
@@ -171,12 +169,10 @@ public class Game {
             }
 
             switch (choice) {
-                case 1 -> store.buyAnimals(player);
+                case 1 -> store.mainMenu(player);
                 case 2 -> {}
                 case 3 -> {}
-                case 4 -> {}
-                case 5 -> {}
-                case 6 -> realGameMenu = false;
+                case 4 -> realGameMenu = false;
                 case 0 -> {
                     realGameMenu = false;
                     setForEach(false);
