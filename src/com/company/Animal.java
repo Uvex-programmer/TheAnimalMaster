@@ -2,19 +2,22 @@ package com.company;
 
 public class Animal {
 
-    private String name;
-    private Gender gender;
-    private int health = 100;
-    private int price;
-    private String animalType;
+    private String name; // What user names them.
 
+    private Gender gender; // Animal gender.
+    private int health = 100; // Animals health.
+    private int startPrice; // Starting price for each animal when you buy in shop.
+    private int currentPrice; // Current price is when animal loose health, value drops.
+    private String animalType; // What kind of animal it is.
+    // Enum class with the genders for the animals.
     public enum Gender{
         FEMALE, MALE;
+        //A method for getting random gender when breeding. Wont allow user to choose new animals gender.
         public static Gender getRandom(){
             return values()[(int) (Math.random() * values().length)];
         }
     }
-
+    // Empty constructor if needed.
     public Animal() {
     }
 
@@ -29,6 +32,11 @@ public class Animal {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getCurrentPrice() {
+        this.currentPrice = (this.health / 100) * this.startPrice;
+        return this.currentPrice;
     }
 
     public Gender getGender() {
@@ -47,12 +55,12 @@ public class Animal {
         this.health = health;
     }
 
-    public int getPrice() {
-        return price;
+    public int getStartPrice() {
+        return startPrice;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setStartPrice(int startPrice) {
+        this.startPrice = startPrice;
     }
 
     public String getAnimalType() {

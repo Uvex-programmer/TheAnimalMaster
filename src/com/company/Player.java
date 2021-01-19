@@ -25,7 +25,7 @@ public class Player {
     public void addAnimal(Player player, Animal animal){
         Scanner input = new Scanner(System.in);
         helper.menuClearScreen();
-        System.out.println("You want to buy a" + animal.getAnimalType() + " for " + animal.getPrice() + "$?");
+        System.out.println("You want to buy a" + animal.getAnimalType() + " for " + animal.getStartPrice() + "$?");
         System.out.println("""
                             # |1| - Yes.
                             # |2| - No.""");
@@ -43,7 +43,7 @@ public class Player {
                     case 2 -> animal.setGender("FEMALE");
                 }
                 animals.add(animal);
-                player.removeMoney(animal.getPrice());
+                player.removeMoney(animal.getStartPrice());
             }
             case 2 -> {}
         }
@@ -76,7 +76,24 @@ public class Player {
             }
         }
     }
+    public void sellAnimal(Player player, Animal animal){
+        helper.menuClearScreen();
+        System.out.println("You want to sell animal: " + animal.getName() + " for " + animal.getCurrentPrice() + "$?");
+        System.out.println("""
+                            # |1| - Yes.
+                            # |2| - No.""");
+        switch(helper.tryCatch(1, 2)){
+            case 1 -> {
+                player.addMoney(animal.getCurrentPrice());
+                animals.remove(animal);
+            }
+            case 2 -> {}
+        }
+    }
     public void removeMoney(int money) {
         this.money = this.money - money;
+    }
+    public void addMoney(int money){
+        this.money = this.money + money;
     }
 }

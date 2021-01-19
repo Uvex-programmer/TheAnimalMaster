@@ -2,9 +2,11 @@ package com.company;
 
 public class Crocodile extends Animal {
 
-    private int price = 40;
+    private int startPrice = 40;
     private String name;
     private String animalType = "crocodile";
+    private int currentPrice;
+    private int health = 100;
 
     public Crocodile() {
     }
@@ -15,8 +17,8 @@ public class Crocodile extends Animal {
     }
 
     @Override
-    public int getPrice() {
-        return price;
+    public int getStartPrice() {
+        return startPrice;
     }
 
     @Override
@@ -27,5 +29,10 @@ public class Crocodile extends Animal {
     @Override
     public String getAnimalType() {
         return animalType;
+    }
+    @Override
+    public int getCurrentPrice() {
+        this.currentPrice = (this.health / 100) * this.startPrice;
+        return this.currentPrice;
     }
 }
