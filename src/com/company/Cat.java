@@ -10,6 +10,9 @@ public class Cat extends Animal {
 
     public Cat() {
     }
+    public Cat(String name, String gender) {
+        super(name, gender);
+    }
 
     @Override
     public void setName(String name) {
@@ -34,5 +37,12 @@ public class Cat extends Animal {
     public int getCurrentPrice() {
         this.currentPrice = (this.health / 100) * this.startPrice;
         return this.currentPrice;
+    }
+    @Override
+    public boolean canEat(Food food) {
+        if(food instanceof Meat){
+            return true;
+        }
+        return food instanceof SuperFood;
     }
 }

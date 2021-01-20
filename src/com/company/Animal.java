@@ -3,6 +3,7 @@ package com.company;
 public class Animal {
 
     private String name; // What user names them.
+    GameHelper helper = new GameHelper();
 
     private Gender gender; // Animal gender.
     private int health = 100; // Animals health.
@@ -59,15 +60,27 @@ public class Animal {
         return startPrice;
     }
 
-    public void setStartPrice(int startPrice) {
-        this.startPrice = startPrice;
-    }
-
     public String getAnimalType() {
         return animalType;
     }
 
-    public void setAnimalType(String animalType) {
-        this.animalType = animalType;
+    public boolean canEat(Food food){
+        return false;
+    }
+    public void eat(Food food){
+        if(this.health >= 100){
+            this.health = 100;
+            System.out.println("This animal is already at full health! ");
+            helper.menuHelper();
+        }
+        if (this.health < 100){
+            this.health = this.health + (int)(this.health * 0.10);
+            if(this.health > 100){
+                this.health = 100;
+                System.out.println(getName() + " -> is now at full health!" + getHealth() + "%");
+                helper.menuHelper();
+
+            }
+        }
     }
 }

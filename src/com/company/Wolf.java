@@ -11,6 +11,10 @@ public class Wolf extends Animal{
     public Wolf() {
     }
 
+    public Wolf(String name, String gender){
+        super(name, gender);
+    }
+
     @Override
     public void setName(String name) {
         this.name = name;
@@ -34,5 +38,15 @@ public class Wolf extends Animal{
     public int getCurrentPrice() {
         this.currentPrice = (this.health / 100) * this.startPrice;
         return this.currentPrice;
+    }
+    @Override
+    public boolean canEat(Food food) {
+        if(food instanceof Meat){
+            return true;
+        }
+        if(food instanceof DryFood){
+            return true;
+        }
+        return food instanceof SuperFood;
     }
 }

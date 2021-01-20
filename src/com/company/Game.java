@@ -1,17 +1,18 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
-    GameHelper gameHelper = new GameHelper();
+    GameHelper helper = new GameHelper();
     boolean forEach = true; // A boolean I need for breaking a for-loop if player wants to exit for main menu in game.
     public Game() {
         // Start with main menu when program is running.
         boolean startMenu = true;
         while(startMenu) {
             Scanner input = new Scanner(System.in); // So we can get user input.
-            gameHelper.menuClearScreen();// Clear the screen for to much text in terminal.
+            helper.menuClearScreen();// Clear the screen for to much text in terminal.
             System.out.println("""
                                 ------------------------
                                 |  ANIMAl MASTER 2000  |
@@ -34,13 +35,13 @@ public class Game {
             //Switch-cases for the user choice.
             switch (choice){
                 case 1 -> startGame(); // Continue the game
-                case 2 -> gameHelper.gameInfo(); // Game info in text
+                case 2 -> helper.gameInfo(); // Game info in text
                 case 3 -> {  //Option to exit the game.
                     boolean exitMenu = true;
                     choice = 0;
                     while (exitMenu) {
                         while (choice < 1 || choice > 2) {  // Looping the exit menu until the user makes a
-                            gameHelper.menuClearScreen();     // correct choice. Must press 1 or 2.
+                            helper.menuClearScreen();     // correct choice. Must press 1 or 2.
                             System.out.println("""
                                                 ------------------------
                                                 |      EXIT GAME       |
@@ -55,7 +56,7 @@ public class Game {
                             }                 // Don't want any error message just return to the choices.
                         }
                         if(choice == 1){ // If user press 1 , game will close.
-                            gameHelper.menuClearScreen();
+                            helper.menuClearScreen();
                             System.out.println("Game is closing...");
                             exitMenu = false;
                             startMenu = false;
@@ -77,7 +78,7 @@ public class Game {
         ArrayList<Player> players = new ArrayList<>(); // Must have a list to save the players in.
         int numberOfTurns = 0; // User decide how many turns the game will do before ends.
         while(numberOfTurns < 5 || numberOfTurns > 30) { // Must be 5-30 turns or user wont continue.
-            gameHelper.menuClearScreen(); // Clear text
+            helper.menuClearScreen(); // Clear text
             System.out.println("Enter how many rounds you want the game to be, between 5-30 rounds!");
             System.out.print("Number of rounds: ");
             try { // Handle exceptions.
@@ -90,7 +91,7 @@ public class Game {
         // Ask the user how many players will join the game.
         int numberOfPlayers = 0;
         while(numberOfPlayers < 1 || numberOfPlayers > 4) { // Can only be 1-4 players.
-            gameHelper.menuClearScreen(); // Clear text
+            helper.menuClearScreen(); // Clear text
             System.out.println("You have chosen " + numberOfTurns + " rounds for the game!\n");
             System.out.println("Now enter how many players between 1-4! ");
             System.out.print("Number of players: ");
@@ -102,7 +103,7 @@ public class Game {
             }
 
         }
-        gameHelper.menuClearScreen(); // Lets the users enter their player names.
+        helper.menuClearScreen(); // Lets the users enter their player names.
         System.out.println("\nYou have chosen " + numberOfPlayers + " players for the game!");
         for(int i = 1; i < numberOfPlayers + 1; i++){
             System.out.print("Player " + i + " -> choose your name: ");
@@ -110,7 +111,7 @@ public class Game {
             players.add(new Player(name));
         }
         // Putting out some game info from what the user has entered before.
-        gameHelper.menuClearScreen();
+        helper.menuClearScreen();
         System.out.println("""
                                 ------------------------
                                 |      GAME INFO       |
@@ -124,18 +125,16 @@ public class Game {
         System.out.println("#");
         System.out.println("# " + players.get(0).getName() + " will start the first round!");
         System.out.println("# May the best player win!");
-        gameHelper.menuHelper();
-
+        helper.menuHelper();
+        //The loop for the game rounds
         for (int i = 1; i < numberOfTurns + 1; i++) {
             for (Player player : players) {
+                animalDead(player);
                 playerMenu(player, i);
-                if(checkIfFalse()){
-                    break;
-                }
+                animalLooseHealth(player);
+                if(checkIfFalse()){ break; }
             }
-            if(checkIfFalse()){
-                break;
-            }
+            if(checkIfFalse()){ break; }
         }
     }
     public void playerMenu(Player player, int turn){
@@ -170,8 +169,8 @@ public class Game {
 
             switch (choice) {
                 case 1 -> store.mainMenu(player);
-                case 2 -> {}
-                case 3 -> {}
+                case 2 -> player.breedAnimal(player, player.animals);
+                case 3 -> player.feedAnimal(player);
                 case 4 -> realGameMenu = false;
                 case 0 -> {
                     realGameMenu = false;
@@ -187,5 +186,29 @@ public class Game {
 
     public void setForEach(boolean forEach) {
         this.forEach = forEach;
+    }
+    public void animalLooseHealth(Player player){
+        Random random = new Random();
+        for(Animal animal: player.animals){
+            int damage = 10 + random.nextInt(21);
+            animal.setHealth(animal.getHealth() - damage);
+        }
+    }
+    public void animalDead(Player player){
+        ArrayList<Animal> deadAnimals = new ArrayList<>();
+        for (int i = 0; i < player.animals.size(); i++){
+            if(player.animals.get(i).getHealth() < 1){
+                deadAnimals.add(player.animals.get(i));
+                player.animals.remove(player.animals.get(i));
+                i--;
+            }
+        }
+        if(deadAnimals.size() > 0){
+            System.out.println("\n".repeat(20));
+            for(Animal animal: deadAnimals){
+                System.out.println(animal.getName() + " is dead.");
+            }
+            helper.menuHelper();
+        }
     }
 }

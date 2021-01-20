@@ -11,6 +11,10 @@ public class Rat extends Animal{
     public Rat() {
     }
 
+    public Rat(String name, String gender){
+        super(name, gender);
+    }
+
     @Override
     public int getCurrentPrice() {
         this.currentPrice = (this.health / 100) * this.startPrice;
@@ -35,5 +39,18 @@ public class Rat extends Animal{
     @Override
     public String getAnimalType() {
         return animalType;
+    }
+    @Override
+    public boolean canEat(Food food) {
+        if(food instanceof Vegetables){
+            return true;
+        }
+        if(food instanceof Meat){
+            return true;
+        }
+        if(food instanceof DryFood){
+            return true;
+        }
+        return food instanceof SuperFood;
     }
 }
