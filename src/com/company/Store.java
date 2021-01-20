@@ -1,20 +1,17 @@
 package com.company;
 
+import java.util.Scanner;
+
 public class Store {
-    //Store class where the menus for buying animals/foods will be.
-    // Booleans for looping each menu so the user can stay in menus until user choose to leave.
-    private boolean menuChecker1 = true;
-    private boolean menuChecker2 = true;
-    private boolean menuChecker3 = true;
-    private boolean menuChecker4 = true;
     GameHelper helper = new GameHelper(); // Calling for game helper methods
     public Store() {
     }
     //Method for the main menu in store.
     public void mainMenu(Player player){
-        menuChecker3 = true;
+        boolean menuChecker3 = true;
         while(menuChecker3) {
             helper.menuClearScreen();
+            player.getPlayerInventory();
             System.out.println("""
                     --------------------------------
                     |          THE STORE           |
@@ -35,9 +32,12 @@ public class Store {
     //Method for the animal shop.
     public void buyAnimals(Player player){
         GameHelper helper = new GameHelper();
-        menuChecker1 = true;
+        //Store class where the menus for buying animals/foods will be.
+        // Booleans for looping each menu so the user can stay in menus until user choose to leave.
+        boolean menuChecker1 = true;
         while(menuChecker1) {
             helper.menuClearScreen();
+            player.getPlayerInventory();
             System.out.println("""
                     ----------------------------------
                     |          ANIMAL STORE          |
@@ -52,11 +52,11 @@ public class Store {
                     #                                #
                     #   |0| - Exit animal store.     #""");
             switch (helper.tryCatch(0, 5)) {
-                case 1 -> player.addAnimal(player, new Rat());
-                case 2 -> player.addAnimal(player, new Parrot());
-                case 3 -> player.addAnimal(player, new Cat());
-                case 4 -> player.addAnimal(player, new Crocodile());
-                case 5 -> player.addAnimal(player, new Wolf());
+                case 1 -> addAnimal(player, new Rat());
+                case 2 -> addAnimal(player, new Parrot());
+                case 3 -> addAnimal(player, new Cat());
+                case 4 -> addAnimal(player, new Crocodile());
+                case 5 -> addAnimal(player, new Wolf());
                 case 0 -> menuChecker1 = false;
             }
         }
@@ -64,9 +64,10 @@ public class Store {
     //Method for the food shop.
     public void buyFoods(Player player){
         GameHelper helper = new GameHelper();
-        menuChecker2 = true;
+        boolean menuChecker2 = true;
         while(menuChecker2) {
             helper.menuClearScreen();
+            player.getPlayerInventory();
             System.out.println("""
                     ----------------------------------
                     |           FOOD STORE           |
@@ -78,35 +79,97 @@ public class Store {
                     #                                #
                     #   |0| - Exit food store.       #""");
             switch (helper.tryCatch(0, 4)) {
-                case 1 -> player.addFood(player, new DryFood());
-                case 2 -> player.addFood(player, new Vegetables());
-                case 3 -> player.addFood(player, new Meat());
-                case 4 -> player.addFood(player, new SuperFood());
+                case 1 -> addFood(player, new DryFood());
+                case 2 -> addFood(player, new Vegetables());
+                case 3 -> addFood(player, new Meat());
+                case 4 -> addFood(player, new SuperFood());
                 case 0 -> menuChecker2 = false;
             }
         }
     }
     //Method for selling animals.
     public void sellAnimals(Player player){
-        int counter = 1;
-        menuChecker4 = true;
+        boolean menuChecker4 = true;
+        if (player.animals.size() > 0) {
         while(menuChecker4) {
-            System.out.println("""
-                    -----------------------------------
-                    |          ANIMAL STORE           |
-                    -----------------------------------
-                    # WHICH ANIMAL DO YOU WANNA SELL? #""");
-            for (Animal animal : player.animals) {
-                System.out.println("# |" + counter + "| - " + animal.getName() + " ->" + animal.getGender() +
-                        " | " + animal.getAnimalType() + " | " + animal.getHealth() + "% health" + " value: " + animal.getCurrentPrice());
-                counter++;
-            }
-            System.out.println("# |0| - Exit store.");
-            if(helper.tryCatch(0, player.animals.size()) == 0){
-                menuChecker4 = false;
-            }else{
+                helper.menuClearScreen();
+                player.getWallet();
+                System.out.println("""
+                        -----------------------------------
+                        |          ANIMAL STORE           |
+                        -----------------------------------
+                        # WHICH ANIMAL DO YOU WANNA SELL? #""");
+                int counter = 1;
+                for (Animal animal : player.animals) {
+                    System.out.println("# |" + counter + "| - " + animal.getName() + " ->" + animal.getGender() +
+                            " | " + animal.getAnimalType() + " | " + animal.getHealth() + "% health" + " value: " + animal.getCurrentPrice());
+                    counter++;
+                }
+                System.out.println("\n# |0| - Exit store.");
                 int index = helper.tryCatch(0, player.animals.size());
-                player.sellAnimal(player, player.animals.get(index - 1));
+                if (index == 0) {
+                    menuChecker4 = false;
+                }else {
+                    player.sellAnimal(player, player.animals.get(index - 1));
+                }
+            }
+        }else{
+            helper.menuClearScreen();
+            System.out.println("You don't have any animals to sell!");
+            helper.menuHelper();
+        }
+    }
+    public void addAnimal(Player player, Animal animal){
+        Scanner input = new Scanner(System.in);
+        helper.menuClearScreen();
+        System.out.println("You want to buy a " + animal.getAnimalType() + " for " + animal.getStartPrice() + "$?");
+        System.out.println("""
+                            # |1| - Yes.
+                            # |2| - No.""");
+        switch(helper.tryCatch(1, 2)){
+            case 1 -> {
+                helper.menuClearScreen();
+                System.out.print("Enter a name for your " + animal.getAnimalType() + ": ");
+                animal.setName(input.nextLine());
+                helper.menuClearScreen();
+                System.out.println("Choose gender for your " + animal.getAnimalType() + "!");
+                System.out.println("""
+                            # |1| - MALE.
+                            # |2| - FEMALE.""");
+                switch (helper.tryCatch(1, 2)){
+                    case 1 -> animal.setGender("MALE");
+                    case 2 -> animal.setGender("FEMALE");
+                }
+                player.animals.add(animal);
+                player.removeMoney(animal.getStartPrice());
+            }
+            case 2 -> {}
+        }
+    }
+    public void addFood(Player player, Food food){
+        int foodCounter = 0;
+        helper.menuClearScreen();
+        System.out.println("You want to buy 1kg of " + food.getName() + " for " + food.getPrice() + "$?");
+        System.out.println("""
+                            # |1| - Yes.
+                            # |2| - No.""");
+        switch(helper.tryCatch(1, 2)){
+            case 1 -> {
+                if(player.foods.size() > 0) {
+                    for (Food food1 : player.foods) {
+                        if (food1.getName().equals(food.getName())){
+                            food1.setKiloGrams(1);
+                            foodCounter++;
+                        }
+                    }
+                }
+                if(foodCounter == 0){
+                    player.foods.add(food);
+                    player.removeMoney(food.getPrice());
+                }
+
+            }
+            case 2 -> {
             }
         }
     }

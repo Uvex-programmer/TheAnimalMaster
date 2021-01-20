@@ -3,7 +3,7 @@ package com.company;
 public class DryFood extends Food{
 
     private String name = "Dry food";
-    private int kiloGrams = 0;
+    private int kiloGrams = 1;
     private int price = 5;
 
     public DryFood() {

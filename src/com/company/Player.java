@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Player {
     GameHelper helper = new GameHelper();
 
-    private String name;
+    private final String name;
     private int money = 200;
     ArrayList<Animal> animals = new ArrayList<>();
     ArrayList<Food> foods = new ArrayList<>();
@@ -18,64 +18,6 @@ public class Player {
 
     public String getName() {
         return name;
-    }
-
-    public int getMoney() {
-        return money;
-    }
-    public void addAnimal(Player player, Animal animal){
-        Scanner input = new Scanner(System.in);
-        helper.menuClearScreen();
-        System.out.println("You want to buy a " + animal.getAnimalType() + " for " + animal.getStartPrice() + "$?");
-        System.out.println("""
-                            # |1| - Yes.
-                            # |2| - No.""");
-        switch(helper.tryCatch(1, 2)){
-            case 1 -> {
-                helper.menuClearScreen();
-                System.out.print("Enter a name for your " + animal.getAnimalType() + ": ");
-                animal.setName(input.nextLine());
-                System.out.println("Choose gender for your " + animal.getAnimalType() + "!");
-                System.out.println("""
-                            # |1| - MALE.
-                            # |2| - FEMALE.""");
-                switch (helper.tryCatch(1, 2)){
-                    case 1 -> animal.setGender("MALE");
-                    case 2 -> animal.setGender("FEMALE");
-                }
-                animals.add(animal);
-                player.removeMoney(animal.getStartPrice());
-            }
-            case 2 -> {}
-        }
-    }
-    public void addFood(Player player, Food food){
-        Scanner input = new Scanner(System.in);
-        int foodCounter = 0;
-        helper.menuClearScreen();
-        System.out.println("You want to buy 1kg of " + food.getName() + " for " + food.getPrice() + "$?");
-        System.out.println("""
-                            # |1| - Yes.
-                            # |2| - No.""");
-        switch(helper.tryCatch(1, 2)){
-            case 1 -> {
-                if(foods.size() > 0) {
-                    for (Food food1 : foods) {
-                        if (food1.getName().equals(food.getName())){
-                            food1.setKiloGrams(1);
-                            foodCounter++;
-                        }
-                    }
-                }
-                if(foodCounter == 0){
-                    foods.add(food);
-                    player.removeMoney(food.getPrice());
-                }
-
-            }
-            case 2 -> {
-            }
-        }
     }
     public void sellAnimal(Player player, Animal animal){
         helper.menuClearScreen();
@@ -122,7 +64,6 @@ public class Player {
                     helper.menuHelper();
                 }
             }
-
             if (listContains(animals.get(animal1-1))) {
                 for (Animal animal : animals) {
                     if (!(checkLeftForBreed(animals.get(animal1 - 1), animal))) {
@@ -134,7 +75,6 @@ public class Player {
                 helper.menuHelper();
                 return;
             }
-
             while (animal2 < 1 || animal2 > tempList.size()) {
                 System.out.println("\n".repeat(20) + "You can pair " + animals.get(animal1 - 1).getName() + " with: \n");
                 int count = 1;
@@ -142,7 +82,6 @@ public class Player {
                     System.out.println("[" + count + "] " + animal.getName() + " --> " + animal.getAnimalType() + " | " + animal.getGender() + " | " + animal.getHealth() + "% health left.");
                     count++;
                 }
-
                 System.out.println("\nChoose your second animal for breeding! Enter number: ");
                 try {
                     animal2 = Integer.parseInt(input.nextLine());
@@ -152,40 +91,36 @@ public class Player {
                 }
             }
         }
-
         if(checkForBreed(animals.get(animal1 - 1), tempList.get(animal2 - 1))){
             if(chanceOfBreed > 50){
                 System.out.println("\n".repeat(20) + "Your breeding succeeded!");
-
-                System.out.println("Enter new name for your new" + animals.get(animal1 - 1).getAnimalType() + "!");
+                String gender = Animal.Gender.getRandom().toString();
+                System.out.println("You got a  " + animals.get(animal1 - 1).getAnimalType() + " that is " + gender + "!");
                 String name = input.nextLine();
 
                 if(animals.get(animal1 - 1).getAnimalType().equals("Rat")){
-                    newAnimal(player, new Rat(name, Animal.Gender.getRandom().toString()));
+                    newAnimal(player, new Rat(name, gender));
                 }
                 if(animals.get(animal1 - 1).getAnimalType().equals("Parrot")){
-                    newAnimal(player, new Parrot(name, Animal.Gender.getRandom().toString()));
+                    newAnimal(player, new Parrot(name, gender));
                 }
                 if(animals.get(animal1 - 1).getAnimalType().equals("Cat")){
-                    newAnimal(player, new Cat(name, Animal.Gender.getRandom().toString()));
+                    newAnimal(player, new Cat(name, gender));
                 }
                 if(animals.get(animal1 - 1).getAnimalType().equals("Crocodile")){
-                    newAnimal(player, new Crocodile(name, Animal.Gender.getRandom().toString()));
+                    newAnimal(player, new Crocodile(name, gender));
                 }
                 if(animals.get(animal1 - 1).getAnimalType().equals("Wolf")){
-                    newAnimal(player, new Wolf(name, Animal.Gender.getRandom().toString()));
+                    newAnimal(player, new Wolf(name, gender));
                 }
-
             }else{
                 System.out.println("\n".repeat(20) + "Breeding failed!! ");
                 helper.menuHelper();
             }
-
         }else{
             System.out.println("\n".repeat(20) + "Can't breed these two animals!");
             helper.menuHelper();
         }
-
     }
     public boolean listContains(Animal animal1) {
         for (Animal animal : animals) {
@@ -201,32 +136,29 @@ public class Player {
         System.out.println("You now got a new " + animal.getAnimalType() + " named: " + animal.getName() + " | " + animal.getGender());
         helper.menuHelper();
     }
-    public boolean checkForBreed(Animal animal1, Animal animal2){
-        return animal1.getAnimalType().equals(animal2.getAnimalType()) && animal1.getGender() != animal2.getGender();
-    }
     public boolean checkLeftForBreed(Animal animal1, Animal animal2){
         return animal1.getGender().equals(animal2.getGender()) || animal1.getName().equals(animal2.getName()) || !animal1.getAnimalType().equals(animal2.getAnimalType());
     }
     public void getFood() {
         if(foods.size() > 0){
-            System.out.println("Here is your food:\n");
+            System.out.println("\n#### Here is your food #### ");
             int count = 1;
             for(Food food: foods){
                 System.out.println("[" + count + "] " + food.getName() + " " + food.getKiloGrams() + "kg.");
                 count++;
             }
+            System.out.println("###########################\n ");
         }
     }
     public void getPlayerAnimal() {
-        if(animals.size() == 0){
-            System.out.println("\nYou don't have any animals right now!");
-        }else{
-            System.out.println("\nHere is your animals: ");
+        if(animals.size() > 0){
+            System.out.println("\n#### Here is your animals ##### ");
             int count = 1;
-            for(Animal animal: animals){
+            for(Animal animal: animals) {
                 System.out.println("[" + count + "] " + animal.getName() + " --> " + animal.getAnimalType() + " | " + animal.getGender() + " | " + animal.getHealth() + "% health left.");
                 count++;
             }
+            System.out.println("############################### ");
         }
     }
     public void feedAnimal(Player player){
@@ -275,5 +207,19 @@ public class Player {
             System.out.println("There is no food or no animals to feed.");
             helper.menuHelper();
         }
+    }
+    public void getWallet() {
+        System.out.println("Wallet: " + this.money + "$");
+    }
+    public boolean checkForBreed(Animal animal1, Animal animal2){
+        return animal1.getAnimalType().equals(animal2.getAnimalType()) && animal1.getGender() != animal2.getGender();
+    }
+    public void getPlayerInventory(){
+        getPlayerAnimal();
+        getFood();
+        getWallet();
+    }
+    public int getMoney(){
+        return this.money;
     }
 }

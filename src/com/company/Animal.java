@@ -1,15 +1,17 @@
 package com.company;
 
-public class Animal {
+public abstract class Animal {
 
     private String name; // What user names them.
     GameHelper helper = new GameHelper();
 
     private Gender gender; // Animal gender.
     private int health = 100; // Animals health.
-    private int startPrice; // Starting price for each animal when you buy in shop.
+    private int startPrice; // Starting price for each animal
+    // when you buy in shop.
     private int currentPrice; // Current price is when animal loose health, value drops.
     private String animalType; // What kind of animal it is.
+    private boolean sick = false;
     // Enum class with the genders for the animals.
     public enum Gender{
         FEMALE, MALE;
@@ -82,5 +84,9 @@ public class Animal {
 
             }
         }
+    }
+
+    public void setSick(boolean sick) {
+        this.sick = sick;
     }
 }

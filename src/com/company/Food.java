@@ -1,9 +1,9 @@
 package com.company;
 
-public class Food {
+public abstract class Food {
 
     private String name;
-    private int kiloGrams;
+    private int kiloGrams = 1;
     private int price;
 
     public Food() {

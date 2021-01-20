@@ -2,9 +2,9 @@ package com.company;
 
 public class Cat extends Animal {
 
-    private int startPrice = 30;
+    private final int startPrice = 30;
     private String name;
-    private String animalType = "cat";
+    private final String animalType = "cat";
     private int currentPrice;
     private int health = 100;
 

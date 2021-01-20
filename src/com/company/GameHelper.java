@@ -29,7 +29,7 @@ public class GameHelper {
 
     //Method to clear text in terminal.
     public void menuClearScreen() {
-        System.out.println("\n".repeat(30));
+        System.out.println("\n".repeat(60));
     }
     //Method for stopping the program for moving so the user can read a message and the press enter to move forward.
     public void menuHelper(){
