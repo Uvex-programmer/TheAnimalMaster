@@ -17,8 +17,8 @@ public class Rat extends Animal{
 
     @Override
     public int getCurrentPrice() {
-        this.currentPrice = (this.health / 100) * this.startPrice;
-        return this.currentPrice;
+        currentPrice = this.health / 100 * this.startPrice;
+        return currentPrice;
     }
 
     @Override

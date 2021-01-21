@@ -5,6 +5,8 @@ import java.util.*;
 public class Game {
     GameHelper helper = new GameHelper();
     ArrayList<Player> players = new ArrayList<>();// Must have a list to save the players in.
+    ArrayList<Player> playersWhoLost = new ArrayList<>();
+
     boolean forEach = true; // A boolean I need for breaking a for-loop if player wants to exit for main menu in game.
     public Game() {
         // Start with main menu when program is running.
@@ -126,17 +128,34 @@ public class Game {
         System.out.println("# " + players.get(0).getName() + " will start the first round!");
         System.out.println("# May the best player win!");
         helper.menuHelper();
+
         //The loop for the game rounds
-        for (int i = 1; i < numberOfTurns + 1; i++) {
-            for (Player player : players) {
-                animalDead(player);
-                playerMenu(player, i);
-                animalLooseHealth(player);
-                if(checkIfFalse()){ break; }
-            }
+        /*for (int i = 1; i < numberOfTurns + 1; i++) {
+                for (Player player : players) {
+                    player.setAllBooleanTrue();
+                    animalDead(player);
+                    playerMenu(player, i);
+                    animalLooseHealth(player);
+                    playerLost(player);
+                    if (checkIfFalse()) {
+                        break;
+                    }
+                }
             if(checkIfFalse()){ break; }
         }
-        sellAllAnimals();
+        checkWinner();
+    }*/
+
+        for (int i = 1; i < numberOfTurns + 1; i++) {
+            for(int j = 0; j < players.size(); j++){
+                players.get(j).setAllBooleanTrue();
+                animalDead(players.get(j));
+                playerMenu(players.get(j), i);
+                animalLooseHealth(players.get(j));
+                playerLost(players.get(j));
+                if (checkIfFalse()) { break; }
+            }if(checkIfFalse()){ break; }
+        }
         checkWinner();
     }
     public void playerMenu(Player player, int turn){
@@ -177,7 +196,6 @@ public class Game {
     public boolean checkIfFalse(){
         return !this.forEach;
     }
-
     public void setForEach(boolean forEach) {
         this.forEach = forEach;
     }
@@ -186,12 +204,6 @@ public class Game {
         for(Animal animal: player.animals){
             int damage = 10 + random.nextInt(21);
             animal.setHealth(animal.getHealth() - damage);
-        }
-        for(Animal animal: player.animals){
-            int sickness = random.nextInt(101);
-                    if(sickness <= 20){
-                        animal.setSick(true);
-                    }
         }
     }
     public void animalDead(Player player){
@@ -214,29 +226,42 @@ public class Game {
     public void checkWinner(){
         int bestScore = 0;
         int bestIndex = 0;
-        for (int i = 0; i < players.size(); i++) {
-            if(players.get(i).getMoney() > bestScore ){
-                bestScore = players.get(i).getMoney();
-                bestIndex = i;
+        if(players.size() == 0){
+            System.out.println("\nThere is no winner, only losers!!");
+            helper.menuHelper();
+        }else {
+            for (int i = 0; i < players.size(); i++) {
+                if (players.get(i).getMoney() > bestScore) {
+                    bestScore = players.get(i).getMoney();
+                    bestIndex = i;
+                }
             }
+            helper.menuClearScreen();
+            sellAllAnimals();
+            System.out.println("\nThe winner of this game is: " + players.get(bestIndex).getName() + " with: " + players.get(bestIndex).getMoney() + "$!\n");
+            for (Player player : players) {
+                System.out.println(player.getName() + ": " + player.getMoney() + "$.");
+            }
+            helper.menuHelper();
         }
-        helper.menuClearScreen();
-        System.out.println("The winner of this game is: " + players.get(bestIndex).getName() + " with: " + players.get(bestIndex).getMoney() + "$!\n");
-        for(Player player: players){
-            System.out.println(player.getName() + ": " + player.getMoney() + "$.");
-        }
-        helper.menuHelper();
     }
     public void sellAllAnimals(){
         helper.menuClearScreen();
-        System.out.println("Game is now ending... All animals every player has left, will be sold for money..");
+        System.out.println("Game is now ending... All animals every player have left, have been sold for money..");
         for(Player player: players){
-            for(Animal animal: player.animals){
-                player.addMoney(animal.getCurrentPrice());
-                player.animals.remove(animal);
 
+            for(int i = 0; i < player.animals.size(); i++){
+                player.addMoney(player.animals.get(i).getCurrentPrice());
+                player.animals.remove(player.animals.get(i));
             }
         }
-        helper.menuHelper();
     }
+    public void playerLost(Player player){
+        if(player.lostGame(player)){
+            System.out.println(player.getName() + " have no money/food left. You are OUT!");
+            players.remove(player);
+            playersWhoLost.add(player);
+        }
+    }
+
 }

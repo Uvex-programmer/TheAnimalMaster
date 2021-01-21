@@ -5,7 +5,7 @@ public class Wolf extends Animal{
     private int startPrice = 50;
     private String name;
     private String animalType = "wolf";
-    private int currentPrice;
+    private int currentPrice = 0;
     private int health = 100;
 
     public Wolf() {
@@ -34,11 +34,12 @@ public class Wolf extends Animal{
     public String getAnimalType() {
         return animalType;
     }
+
     @Override
     public int getCurrentPrice() {
-        this.currentPrice = (this.health / 100) * this.startPrice;
-        return this.currentPrice;
+        return currentPrice;
     }
+
     @Override
     public boolean canEat(Food food) {
         if(food instanceof Meat){

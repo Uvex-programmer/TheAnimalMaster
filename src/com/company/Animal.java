@@ -37,11 +37,6 @@ public abstract class Animal {
         this.name = name;
     }
 
-    public int getCurrentPrice() {
-        this.currentPrice = (this.health / 100) * this.startPrice;
-        return this.currentPrice;
-    }
-
     public Gender getGender() {
         return gender;
     }
@@ -60,6 +55,10 @@ public abstract class Animal {
 
     public int getStartPrice() {
         return startPrice;
+    }
+    public int getCurrentPrice() {
+        this.currentPrice = (this.health / 100) * this.startPrice;
+        return this.currentPrice;
     }
 
     public String getAnimalType() {
@@ -88,5 +87,9 @@ public abstract class Animal {
 
     public void setSick(boolean sick) {
         this.sick = sick;
+    }
+
+    public void setCurrentPrice(int currentPrice) {
+        this.currentPrice = currentPrice;
     }
 }

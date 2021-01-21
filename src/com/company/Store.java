@@ -51,16 +51,47 @@ public class Store {
                     #   |5| - Wolf        50$.       #   
                     #                                #
                     #   |0| - Exit animal store.     #""");
-            switch (helper.tryCatch(0, 5)) {
-                case 1 -> addAnimal(player, new Rat());
-                case 2 -> addAnimal(player, new Parrot());
-                case 3 -> addAnimal(player, new Cat());
-                case 4 -> addAnimal(player, new Crocodile());
-                case 5 -> addAnimal(player, new Wolf());
-                case 0 -> menuChecker1 = false;
+                switch (helper.tryCatch(0, 5)) {
+                    case 1 -> {
+                        if(player.checkIfTrue(player.canBuyAnimal)){
+                            addAnimal(player, new Rat());
+                        }else{
+                            choiceIsMade();
+                        }
+                    }
+                    case 2 -> {
+                        if(player.checkIfTrue(player.canBuyAnimal)){
+                            addAnimal(player, new Parrot());
+                        }else{
+                            choiceIsMade();
+                        }
+                    }
+                    case 3 -> {
+                        if(player.checkIfTrue(player.canBuyAnimal)){
+                            addAnimal(player, new Cat());
+                        }else{
+                            choiceIsMade();
+                        }
+                    }
+                    case 4 -> {
+                        if(player.checkIfTrue(player.canBuyAnimal)){
+                            addAnimal(player, new Crocodile());
+                        }else{
+                            choiceIsMade();
+                        }
+                    }
+                    case 5 -> {
+                        if(player.checkIfTrue(player.canBuyAnimal)){
+                            addAnimal(player, new Wolf());
+                        }else{
+                            choiceIsMade();
+                        }
+                    }
+                    case 0 -> menuChecker1 = false;
+
+                }
             }
         }
-    }
     //Method for the food shop.
     public void buyFoods(Player player){
         GameHelper helper = new GameHelper();
@@ -79,10 +110,34 @@ public class Store {
                     #                                #
                     #   |0| - Exit food store.       #""");
             switch (helper.tryCatch(0, 4)) {
-                case 1 -> addFood(player, new DryFood());
-                case 2 -> addFood(player, new Vegetables());
-                case 3 -> addFood(player, new Meat());
-                case 4 -> addFood(player, new SuperFood());
+                case 1 -> {
+                    if(player.checkIfTrue(player.canBuyFood)){
+                        addFood(player, new DryFood());
+                    }else{
+                        choiceIsMade();
+                    }
+                }
+                case 2 -> {
+                    if(player.checkIfTrue(player.canBuyFood)){
+                        addFood(player, new Vegetables());
+                    }else{
+                        choiceIsMade();
+                    }
+                }
+                case 3 -> {
+                    if(player.checkIfTrue(player.canBuyFood)){
+                        addFood(player, new Meat());
+                    }else{
+                        choiceIsMade();
+                    }
+                }
+                case 4 -> {
+                    if(player.checkIfTrue(player.canBuyFood)){
+                        addFood(player, new SuperFood());
+                    }else{
+                        choiceIsMade();
+                    }
+                }
                 case 0 -> menuChecker2 = false;
             }
         }
@@ -106,13 +161,19 @@ public class Store {
                     counter++;
                 }
                 System.out.println("\n# |0| - Exit store.");
-                int index = helper.tryCatch(0, player.animals.size());
-                if (index == 0) {
-                    menuChecker4 = false;
-                }else {
-                    player.sellAnimal(player, player.animals.get(index - 1));
+                    int index = helper.tryCatch(0, player.animals.size());
+                    if (index == 0) {
+                        menuChecker4 = false;
+                    } else {
+                        if(player.checkIfTrue(player.canSellAnimal)) {
+                            player.sellAnimal(player, player.animals.get(index - 1));
+                            player.setAllBooleanFalse();
+                            player.setCanSellAnimal(true);
+                        }else{
+                            choiceIsMade();
+                        }
+                    }
                 }
-            }
         }else{
             helper.menuClearScreen();
             System.out.println("You don't have any animals to sell!");
@@ -142,6 +203,9 @@ public class Store {
                 }
                 player.animals.add(animal);
                 player.removeMoney(animal.getStartPrice());
+                player.setAllBooleanFalse();
+                player.setCanBuyAnimal(true);
+
             }
             case 2 -> {}
         }
@@ -159,6 +223,7 @@ public class Store {
                     for (Food food1 : player.foods) {
                         if (food1.getName().equals(food.getName())){
                             food1.setKiloGrams(1);
+                            player.removeMoney(food.getPrice());
                             foodCounter++;
                         }
                     }
@@ -166,6 +231,8 @@ public class Store {
                 if(foodCounter == 0){
                     player.foods.add(food);
                     player.removeMoney(food.getPrice());
+                    player.setAllBooleanFalse();
+                    player.setCanBuyFood(true);
                 }
 
             }
@@ -173,4 +240,11 @@ public class Store {
             }
         }
     }
+    public void choiceIsMade() {
+        helper.menuClearScreen();
+        System.out.println("You already made your move this round!");
+        System.out.println("Must wait for next round.");
+        helper.menuHelper();
+    }
+
 }

@@ -33,12 +33,12 @@ public class Crocodile extends Animal {
     public String getAnimalType() {
         return animalType;
     }
+
     @Override
     public int getCurrentPrice() {
-        this.currentPrice = (this.health / 100) * this.startPrice;
+        this.currentPrice = this.health / 100 * this.startPrice;
         return this.currentPrice;
     }
-
     @Override
     public boolean canEat(Food food) {
         if(food instanceof Meat){
@@ -46,4 +46,5 @@ public class Crocodile extends Animal {
         }
         return food instanceof SuperFood;
     }
+
 }
