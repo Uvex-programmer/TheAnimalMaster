@@ -6,7 +6,7 @@ public abstract class Animal {
     GameHelper helper = new GameHelper();
 
     private Gender gender; // Animal gender.
-    private int health = 100; // Animals health.
+    private int health; // Animals health.
     private int startPrice; // Starting price for each animal
     // when you buy in shop.
     private int currentPrice; // Current price is when animal loose health, value drops.
@@ -57,7 +57,8 @@ public abstract class Animal {
         return startPrice;
     }
     public int getCurrentPrice() {
-        this.currentPrice = (this.health / 100) * this.startPrice;
+        double tempNumber = ((this.health / 100.0) * this.startPrice);
+        this.currentPrice = (int) tempNumber;
         return this.currentPrice;
     }
 
@@ -87,9 +88,5 @@ public abstract class Animal {
 
     public void setSick(boolean sick) {
         this.sick = sick;
-    }
-
-    public void setCurrentPrice(int currentPrice) {
-        this.currentPrice = currentPrice;
     }
 }

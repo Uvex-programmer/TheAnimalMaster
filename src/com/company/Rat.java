@@ -8,6 +8,7 @@ public class Rat extends Animal{
     private int currentPrice;
     private int health = 100;
 
+
     public Rat() {
     }
 
@@ -17,8 +18,9 @@ public class Rat extends Animal{
 
     @Override
     public int getCurrentPrice() {
-        currentPrice = this.health / 100 * this.startPrice;
-        return currentPrice;
+        double tempNumber = ((this.health / 100.0) * this.startPrice);
+        this.currentPrice = (int) tempNumber;
+        return this.currentPrice;
     }
 
     @Override
@@ -53,4 +55,15 @@ public class Rat extends Animal{
         }
         return food instanceof SuperFood;
     }
+
+    @Override
+    public int getHealth() {
+        return health;
+    }
+
+    @Override
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
 }

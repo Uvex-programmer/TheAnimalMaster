@@ -36,7 +36,8 @@ public class Crocodile extends Animal {
 
     @Override
     public int getCurrentPrice() {
-        this.currentPrice = this.health / 100 * this.startPrice;
+        double tempNumber = ((this.health / 100.0) * this.startPrice);
+        this.currentPrice = (int) tempNumber;
         return this.currentPrice;
     }
     @Override
@@ -47,4 +48,13 @@ public class Crocodile extends Animal {
         return food instanceof SuperFood;
     }
 
+    @Override
+    public int getHealth() {
+        return health;
+    }
+
+    @Override
+    public void setHealth(int health) {
+        this.health = health;
+    }
 }

@@ -182,61 +182,74 @@ public class Store {
     }
     public void addAnimal(Player player, Animal animal){
         Scanner input = new Scanner(System.in);
-        helper.menuClearScreen();
-        System.out.println("You want to buy a " + animal.getAnimalType() + " for " + animal.getStartPrice() + "$?");
-        System.out.println("""
-                            # |1| - Yes.
-                            # |2| - No.""");
-        switch(helper.tryCatch(1, 2)){
-            case 1 -> {
-                helper.menuClearScreen();
-                System.out.print("Enter a name for your " + animal.getAnimalType() + ": ");
-                animal.setName(input.nextLine());
-                helper.menuClearScreen();
-                System.out.println("Choose gender for your " + animal.getAnimalType() + "!");
-                System.out.println("""
+        if(player.getMoney() < animal.getStartPrice()){
+            helper.menuClearScreen();
+            System.out.println("You don't have enough money for this animal.");
+            helper.menuHelper();
+        }else {
+            helper.menuClearScreen();
+            System.out.println("You want to buy a " + animal.getAnimalType() + " for " + animal.getStartPrice() + "$?");
+            System.out.println("""
+                    # |1| - Yes.
+                    # |2| - No.""");
+            switch (helper.tryCatch(1, 2)) {
+                case 1 -> {
+                    helper.menuClearScreen();
+                    System.out.print("Enter a name for your " + animal.getAnimalType() + ": ");
+                    animal.setName(input.nextLine());
+                    helper.menuClearScreen();
+                    System.out.println("Choose gender for your " + animal.getAnimalType() + "!");
+                    System.out.println("""
                             # |1| - MALE.
                             # |2| - FEMALE.""");
-                switch (helper.tryCatch(1, 2)){
-                    case 1 -> animal.setGender("MALE");
-                    case 2 -> animal.setGender("FEMALE");
-                }
-                player.animals.add(animal);
-                player.removeMoney(animal.getStartPrice());
-                player.setAllBooleanFalse();
-                player.setCanBuyAnimal(true);
+                    switch (helper.tryCatch(1, 2)) {
+                        case 1 -> animal.setGender("MALE");
+                        case 2 -> animal.setGender("FEMALE");
+                    }
+                    player.animals.add(animal);
+                    player.removeMoney(animal.getStartPrice());
+                    player.setAllBooleanFalse();
+                    player.setCanBuyAnimal(true);
 
+                }
+                case 2 -> {
+                }
             }
-            case 2 -> {}
         }
     }
     public void addFood(Player player, Food food){
-        int foodCounter = 0;
-        helper.menuClearScreen();
-        System.out.println("You want to buy 1kg of " + food.getName() + " for " + food.getPrice() + "$?");
-        System.out.println("""
-                            # |1| - Yes.
-                            # |2| - No.""");
-        switch(helper.tryCatch(1, 2)){
-            case 1 -> {
-                if(player.foods.size() > 0) {
-                    for (Food food1 : player.foods) {
-                        if (food1.getName().equals(food.getName())){
-                            food1.setKiloGrams(1);
-                            player.removeMoney(food.getPrice());
-                            foodCounter++;
+        if(player.getMoney() < food.getPrice()){
+            helper.menuClearScreen();
+            System.out.println("You don't have enough money to buy this food.");
+            helper.menuHelper();
+        }else {
+            int foodCounter = 0;
+            helper.menuClearScreen();
+            System.out.println("You want to buy 1kg of " + food.getName() + " for " + food.getPrice() + "$?");
+            System.out.println("""
+                    # |1| - Yes.
+                    # |2| - No.""");
+            switch (helper.tryCatch(1, 2)) {
+                case 1 -> {
+                    if (player.foods.size() > 0) {
+                        for (Food food1 : player.foods) {
+                            if (food1.getName().equals(food.getName())) {
+                                food1.setKiloGrams(1);
+                                player.removeMoney(food.getPrice());
+                                foodCounter++;
+                            }
                         }
                     }
-                }
-                if(foodCounter == 0){
-                    player.foods.add(food);
-                    player.removeMoney(food.getPrice());
-                    player.setAllBooleanFalse();
-                    player.setCanBuyFood(true);
-                }
+                    if (foodCounter == 0) {
+                        player.foods.add(food);
+                        player.removeMoney(food.getPrice());
+                        player.setAllBooleanFalse();
+                        player.setCanBuyFood(true);
+                    }
 
-            }
-            case 2 -> {
+                }
+                case 2 -> {
+                }
             }
         }
     }
