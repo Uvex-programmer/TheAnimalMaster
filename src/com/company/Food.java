@@ -1,6 +1,8 @@
 package com.company;
 
-public abstract class Food {
+import java.io.Serializable;
+
+public abstract class Food implements Serializable {
 
     private String name;
     private int kiloGrams = 1;

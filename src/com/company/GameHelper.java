@@ -1,10 +1,11 @@
 package com.company;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class GameHelper {
+public class GameHelper implements Serializable {
     //Here is where I will put the menus for the start of the game.
     //Will take in information as how the player wants to setup the game.
     public GameHelper() {

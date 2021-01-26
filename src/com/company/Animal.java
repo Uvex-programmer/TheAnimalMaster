@@ -1,6 +1,8 @@
 package com.company;
 
-public abstract class Animal {
+import java.io.Serializable;
+
+public abstract class Animal implements Serializable {
 
     private String name; // What user names them.
     GameHelper helper = new GameHelper();

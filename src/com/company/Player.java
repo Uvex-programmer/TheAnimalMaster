@@ -1,10 +1,11 @@
 package com.company;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Player {
+public class Player implements Serializable {
     GameHelper helper = new GameHelper();
     boolean canBuyFood = true;
     boolean canBuyAnimal = true;

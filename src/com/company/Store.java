@@ -1,8 +1,9 @@
 package com.company;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class Store {
+public class Store implements Serializable {
     GameHelper helper = new GameHelper(); // Calling for game helper methods
     public Store() {
     }

@@ -1,14 +1,20 @@
 package com.company;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Game {
+public class Game implements Serializable {
     GameHelper helper = new GameHelper();
     ArrayList<Player> players = new ArrayList<>();// Must have a list to save the players in.
     ArrayList<Player> playersWhoLost = new ArrayList<>();
+    save Save = new save();
+    Player currentPlayer;
+    int numberOfTurns;
+    int currentTurn = 1;
 
     boolean forEach = true; // A boolean I need for breaking a for-loop if player wants to exit for main menu in game.
     public Game() {
+        Save.setgame(this);
         // Start with main menu when program is running.
         boolean startMenu = true;
         while(startMenu) {
@@ -21,12 +27,13 @@ public class Game {
                                 ------------------------
                                 #   |1| - Start game   #
                                 #   |2| - Game info    #
+                                #   |3| - Load game    #
                                 #                      #
-                                #   |3| - Exit         #
+                                #   |4| - Exit         #
                                 ------------------------""");
             //Checks so user enters right input and stops from getting exceptions.
             int choice = 0;
-            while (choice < 1 || choice > 3) {
+            while (choice < 1 || choice > 4) {
                 try {
                     System.out.print("Enter an option: ");
                     choice = input.nextInt();
@@ -39,7 +46,8 @@ public class Game {
             switch (choice){
                 case 1 -> startGame(); // Continue the game
                 case 2 -> helper.gameInfo(); // Game info in text
-                case 3 -> {  //Option to exit the game.
+                case 3 -> Save.loadGame();
+                case 4 -> {  //Option to exit the game.
                     boolean exitMenu = true;
                     choice = 0;
                     while (exitMenu) {
@@ -70,6 +78,7 @@ public class Game {
 
                     }
                 }
+
             }
         }
     }
@@ -78,7 +87,7 @@ public class Game {
     public void startGame(){
 
         Scanner myScanner = new Scanner(System.in);
-        int numberOfTurns = 0; // User decide how many turns the game will do before ends.
+        numberOfTurns = 0; // User decide how many turns the game will do before ends.
         while(numberOfTurns < 5 || numberOfTurns > 30) { // Must be 5-30 turns or user wont continue.
             helper.menuClearScreen(); // Clear text
             System.out.println("Enter how many rounds you want the game to be, between 5-30 rounds!");
@@ -129,47 +138,21 @@ public class Game {
         System.out.println("# May the best player win!");
         helper.menuHelper();
 
-        //The loop for the game rounds
-        /*for (int i = 1; i < numberOfTurns + 1; i++) {
-                for (Player player : players) {
-                    player.setAllBooleanTrue();
-                    animalDead(player);
-                    playerMenu(player, i);
-                    animalLooseHealth(player);
-                    playerLost(player);
-                    if (checkIfFalse()) {
-                        break;
-                    }
-                }
-            if(checkIfFalse()){ break; }
-        }
-        checkWinner();
-    }*/
+        theGame();
 
-        for (int i = 1; i < numberOfTurns + 1; i++) {
-            for(int j = 0; j < players.size(); j++){
-                players.get(j).setAllBooleanTrue();
-                animalDead(players.get(j));
-                playerMenu(players.get(j), i);
-                animalLooseHealth(players.get(j));
-                playerLost(players.get(j));
-                if (checkIfFalse()) { break; }
-            }if(checkIfFalse()){ break; }
-        }
-        checkWinner();
     }
-    public void playerMenu(Player player, int turn){
+    public void playerMenu(){
         Store store = new Store();
         boolean realGameMenu = true;
 
         while(realGameMenu) {
 
             System.out.println("\n".repeat(20));
-            player.getPlayerAnimal();
-            player.getFood();
-            player.getWallet();
-            System.out.println("\nIt's now round: " + turn);
-            System.out.println(player.getName() + "'s turn!\n");
+            currentPlayer.getPlayerAnimal();
+            currentPlayer.getFood();
+            currentPlayer.getWallet();
+            System.out.println("\nIt's now round: " + currentTurn);
+            System.out.println(currentPlayer.getName() + "'s turn!\n");
             System.out.println("""
                                 --------------------------------
                                 |          THE GAME            |
@@ -179,12 +162,14 @@ public class Game {
                                 #   |3| - Feed animal.         #
                                 #   |4| - Done, next player.   #
                                 #                              #
+                                #   |5| - Save game            #
                                 #   |0| - Exit to main menu.   #""");
-            switch (helper.tryCatch(0,4)) {
-                case 1 -> store.mainMenu(player);
-                case 2 -> player.breedAnimal(player, player.animals);
-                case 3 -> player.feedAnimal(player);
+            switch (helper.tryCatch(0,5)) {
+                case 1 -> store.mainMenu(currentPlayer);
+                case 2 -> currentPlayer.breedAnimal(currentPlayer, currentPlayer.animals);
+                case 3 -> currentPlayer.feedAnimal(currentPlayer);
                 case 4 -> realGameMenu = false;
+                case 5 -> Save.saveGame(this);
                 case 0 -> {
                     realGameMenu = false;
                     setForEach(false);
@@ -199,19 +184,19 @@ public class Game {
     public void setForEach(boolean forEach) {
         this.forEach = forEach;
     }
-    public void animalLooseHealth(Player player){
+    public void animalLooseHealth(){
         Random random = new Random();
-        for(Animal animal: player.animals){
+        for(Animal animal: currentPlayer.animals){
             int damage = 10 + random.nextInt(21);
             animal.setHealth(animal.getHealth() - damage);
         }
     }
-    public void animalDead(Player player){
+    public void animalDead(){
         ArrayList<Animal> deadAnimals = new ArrayList<>();
-        for (int i = 0; i < player.animals.size(); i++){
-            if(player.animals.get(i).getHealth() < 1){
-                deadAnimals.add(player.animals.get(i));
-                player.animals.remove(player.animals.get(i));
+        for (int i = 0; i < currentPlayer.animals.size(); i++){
+            if(currentPlayer.animals.get(i).getHealth() < 1){
+                deadAnimals.add(currentPlayer.animals.get(i));
+                currentPlayer.animals.remove(currentPlayer.animals.get(i));
                 i--;
             }
         }
@@ -256,12 +241,29 @@ public class Game {
             }
         }
     }
-    public void playerLost(Player player){
-        if(player.lostGame(player)){
-            System.out.println(player.getName() + " have no money/food left. You are OUT!");
-            players.remove(player);
-            playersWhoLost.add(player);
+    public void playerLost(){
+        if(currentPlayer.lostGame(currentPlayer)){
+            System.out.println(currentPlayer.getName() + " have no money/food left. You are OUT!");
+            players.remove(currentPlayer);
+            playersWhoLost.add(currentPlayer);
         }
     }
+    public void theGame(){
+        for (int i = currentTurn; i < numberOfTurns + 1; i++) {
+            for(int j = 0; j < players.size(); j++){
+                currentPlayer = players.get(j);
+                currentPlayer.setAllBooleanTrue();
+                animalDead();
+                playerMenu();
+                animalLooseHealth();
+                playerLost();
+                if (checkIfFalse()) { break; }
+            }if(checkIfFalse()){ break; }
+            currentTurn++;
+        }
+        checkWinner();
+    }
+
+
 
 }
