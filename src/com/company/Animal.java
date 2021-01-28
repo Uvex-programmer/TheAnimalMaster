@@ -69,21 +69,23 @@ public abstract class Animal implements Serializable {
     }
 
     public boolean canEat(Food food){
-        return false;
+        return true;
     }
     public void eat(Food food){
-        if(this.health >= 100){
-            this.health = 100;
-            System.out.println("This animal is already at full health! ");
-            helper.menuHelper();
-        }
-        if (this.health < 100){
-            this.health = this.health + (int)(this.health * 0.10);
-            if(this.health > 100){
+        if(canEat(food)) {
+            if (this.health >= 100) {
                 this.health = 100;
-                System.out.println(getName() + " -> is now at full health!" + getHealth() + "%");
+                System.out.println("This animal is already at full health! ");
                 helper.menuHelper();
+            }
+            if (this.health < 100) {
+                this.health = this.health + (int) (this.health * 0.10);
+                if (this.health > 100) {
+                    this.health = 100;
+                    System.out.println(getName() + " -> is now at full health!" + getHealth() + "%");
+                    helper.menuHelper();
 
+                }
             }
         }
     }

@@ -104,10 +104,10 @@ public class Store implements Serializable {
                     ----------------------------------
                     |           FOOD STORE           |
                     ----------------------------------
-                    #   |1| - Dry food    1kg    5$. #
-                    #   |2| - Vegetables  1kg   10$. #
-                    #   |3| - Meat        1kg   15$. # 
-                    #   |4| - Super food  1kg   20$. #
+                    #   |1| - Dry food    1kg    5$. # || Can eat: Rat -> gives + 10% Health.
+                    #   |2| - Vegetables  1kg    5$. # || Can eat: Rat, Parrot -> gives + 10% Health.
+                    #   |3| - Meat        1kg   10$. # || Can eat: Cat,Wolf,Crocodile,Rat -> gives + 10% Health.
+                    #   |4| - Super food  1kg   25$. # || All animals can eat -> gives 20% Health.
                     #                                #
                     #   |0| - Exit food store.       #""");
             switch (helper.tryCatch(0, 4)) {

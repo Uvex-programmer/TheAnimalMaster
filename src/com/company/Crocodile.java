@@ -57,4 +57,32 @@ public class Crocodile extends Animal {
     public void setHealth(int health) {
         this.health = health;
     }
+    @Override
+    public void eat(Food food) {
+        if (canEat(food)) {
+            if (this.health >= 100) {
+                this.health = 100;
+                System.out.println("This animal is already at full health! ");
+                helper.menuHelper();
+            }
+            if (this.health < 100) {
+                if(food instanceof SuperFood){
+                    this.health = this.health + (int) (this.health * 0.20);
+                    if (this.health > 100) {
+                        this.health = 100;
+                        System.out.println(getName() + " -> is now at full health!" + getHealth() + "%");
+                        helper.menuHelper();
+
+                    }
+                }else{
+                    this.health = this.health + (int) (this.health * 0.10);
+                    if (this.health > 100) {
+                        this.health = 100;
+                        System.out.println(getName() + " -> is now at full health!" + getHealth() + "%");
+                        helper.menuHelper();
+                    }
+                }
+            }
+        }
+    }
 }

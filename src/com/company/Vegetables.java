@@ -4,7 +4,7 @@ public class Vegetables extends Food {
 
     private String name = "Vegetables";
     private int kiloGrams = 1;
-    private int price  = 10;
+    private int price  = 5;
 
     public Vegetables() {
     }

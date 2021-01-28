@@ -14,7 +14,7 @@ public class Player implements Serializable {
     boolean canFeed = true;
 
     private final String name;
-    private int money = 200;
+    private int money = 400;
     ArrayList<Animal> animals = new ArrayList<>();
     ArrayList<Food> foods = new ArrayList<>();
 
@@ -101,27 +101,21 @@ public class Player implements Serializable {
             }
             if (checkForBreed(animals.get(animal1 - 1), tempList.get(animal2 - 1))) {
                 if (chanceOfBreed > 50) {
-                    System.out.println("\n".repeat(20) + "Your breeding succeeded!");
-                    //String gender = Animal.Gender.getRandom().toString();
-                    String gender = Animal.Gender.MALE.toString();
-                    System.out.println("You got a  " + animals.get(animal1 - 1).getAnimalType() + " that is " + gender + "!");
-                    System.out.print("Enter name: ");
-                    String name = input.nextLine();
 
                     if (animals.get(animal1 - 1).getAnimalType().equals("rat")) {
-                        newAnimal(player, new Rat(name, gender));
+                        newAnimal(player, new Rat());
                     }
                     if (animals.get(animal1 - 1).getAnimalType().equals("parrot")) {
-                        newAnimal(player, new Parrot(name, gender));
+                        newAnimal(player, new Parrot());
                     }
                     if (animals.get(animal1 - 1).getAnimalType().equals("cat")) {
-                        newAnimal(player, new Cat(name, gender));
+                        newAnimal(player, new Cat());
                     }
                     if (animals.get(animal1 - 1).getAnimalType().equals("crocodile")) {
-                        newAnimal(player, new Crocodile(name, gender));
+                        newAnimal(player, new Crocodile());
                     }
                     if (animals.get(animal1 - 1).getAnimalType().equals("wolf")) {
-                        newAnimal(player, new Wolf(name, gender));
+                        newAnimal(player, new Wolf());
                     }
                 } else {
                     helper.menuClearScreen();
@@ -147,9 +141,17 @@ public class Player implements Serializable {
         return false;
     }
     public void newAnimal(Player player, Animal animal){
-        player.animals.add(animal);
+        Scanner input = new Scanner(System.in);
         helper.menuClearScreen();
+        System.out.println("\n".repeat(20) + "Your breeding succeeded!");
+        String gender = Animal.Gender.getRandom().toString();
+        System.out.println("You got a  " + animal.getAnimalType() + " that is " + gender + "!");
+        System.out.print("Enter name: ");
+        String animalName = input.nextLine();
+        animal.setName(animalName);
+        animal.setGender(gender);
         System.out.println("You now got a new " + animal.getAnimalType() + " named: " + animal.getName() + " | " + animal.getGender());
+        player.animals.add(animal);
         player.setAllBooleanFalse();
         helper.menuHelper();
     }

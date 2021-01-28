@@ -4,7 +4,7 @@ public class SuperFood extends Food{
 
     private String name = "Super food";
     private int kiloGrams = 1;
-    private int price = 20;
+    private int price = 25;
 
     public SuperFood() {
     }
