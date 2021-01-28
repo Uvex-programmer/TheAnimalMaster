@@ -102,23 +102,25 @@ public class Player implements Serializable {
             if (checkForBreed(animals.get(animal1 - 1), tempList.get(animal2 - 1))) {
                 if (chanceOfBreed > 50) {
                     System.out.println("\n".repeat(20) + "Your breeding succeeded!");
-                    String gender = Animal.Gender.getRandom().toString();
+                    //String gender = Animal.Gender.getRandom().toString();
+                    String gender = Animal.Gender.MALE.toString();
                     System.out.println("You got a  " + animals.get(animal1 - 1).getAnimalType() + " that is " + gender + "!");
+                    System.out.print("Enter name: ");
                     String name = input.nextLine();
 
-                    if (animals.get(animal1 - 1).getAnimalType().equals("Rat")) {
+                    if (animals.get(animal1 - 1).getAnimalType().equals("rat")) {
                         newAnimal(player, new Rat(name, gender));
                     }
-                    if (animals.get(animal1 - 1).getAnimalType().equals("Parrot")) {
+                    if (animals.get(animal1 - 1).getAnimalType().equals("parrot")) {
                         newAnimal(player, new Parrot(name, gender));
                     }
-                    if (animals.get(animal1 - 1).getAnimalType().equals("Cat")) {
+                    if (animals.get(animal1 - 1).getAnimalType().equals("cat")) {
                         newAnimal(player, new Cat(name, gender));
                     }
-                    if (animals.get(animal1 - 1).getAnimalType().equals("Crocodile")) {
+                    if (animals.get(animal1 - 1).getAnimalType().equals("crocodile")) {
                         newAnimal(player, new Crocodile(name, gender));
                     }
-                    if (animals.get(animal1 - 1).getAnimalType().equals("Wolf")) {
+                    if (animals.get(animal1 - 1).getAnimalType().equals("wolf")) {
                         newAnimal(player, new Wolf(name, gender));
                     }
                 } else {

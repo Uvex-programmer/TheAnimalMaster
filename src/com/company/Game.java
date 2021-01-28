@@ -10,7 +10,7 @@ public class Game implements Serializable {
     save Save = new save();
     Player currentPlayer;
     int numberOfTurns;
-    int currentTurn = 1;
+    int currentTurn;
 
     boolean forEach = true; // A boolean I need for breaking a for-loop if player wants to exit for main menu in game.
     public Game() {
@@ -85,7 +85,8 @@ public class Game implements Serializable {
 
     //Method to start the real game.
     public void startGame(){
-
+        currentTurn = 1;
+        setForEach(true);
         Scanner myScanner = new Scanner(System.in);
         numberOfTurns = 0; // User decide how many turns the game will do before ends.
         while(numberOfTurns < 5 || numberOfTurns > 30) { // Must be 5-30 turns or user wont continue.
@@ -215,6 +216,7 @@ public class Game implements Serializable {
             System.out.println("\nThere is no winner, only losers!!");
             helper.menuHelper();
         }else {
+            sellAllAnimals();
             for (int i = 0; i < players.size(); i++) {
                 if (players.get(i).getMoney() > bestScore) {
                     bestScore = players.get(i).getMoney();
@@ -222,9 +224,11 @@ public class Game implements Serializable {
                 }
             }
             helper.menuClearScreen();
-            sellAllAnimals();
             System.out.println("\nThe winner of this game is: " + players.get(bestIndex).getName() + " with: " + players.get(bestIndex).getMoney() + "$!\n");
             for (Player player : players) {
+                System.out.println(player.getName() + ": " + player.getMoney() + "$.");
+            }
+            for(Player player: playersWhoLost){
                 System.out.println(player.getName() + ": " + player.getMoney() + "$.");
             }
             helper.menuHelper();
@@ -238,6 +242,7 @@ public class Game implements Serializable {
             for(int i = 0; i < player.animals.size(); i++){
                 player.addMoney(player.animals.get(i).getCurrentPrice());
                 player.animals.remove(player.animals.get(i));
+                i--;
             }
         }
     }
@@ -253,9 +258,9 @@ public class Game implements Serializable {
             for(int j = 0; j < players.size(); j++){
                 currentPlayer = players.get(j);
                 currentPlayer.setAllBooleanTrue();
+                animalLooseHealth();
                 animalDead();
                 playerMenu();
-                animalLooseHealth();
                 playerLost();
                 if (checkIfFalse()) { break; }
             }if(checkIfFalse()){ break; }
