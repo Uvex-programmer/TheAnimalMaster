@@ -4,23 +4,23 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Game implements Serializable {
-    GameHelper helper = new GameHelper();
-    ArrayList<Player> players = new ArrayList<>();// Must have a list to save the players in.
+    ArrayList<Player> players = new ArrayList<>();// Must have a list to SaveGame the players in.
     ArrayList<Player> playersWhoLost = new ArrayList<>();
-    save Save = new save();
+    SaveGame SaveGame = new SaveGame();
     Player currentPlayer;
     int numberOfTurns;
     int currentTurn;
+    int currentPlayerIndex;
 
     boolean forEach = true; // A boolean I need for breaking a for-loop if player wants to exit for main menu in game.
     public Game() {
-        Save.setgame(this);
+        SaveGame.setgame(this);
         // Start with main menu when program is running.
         boolean startMenu = true;
         while(startMenu) {
             players.clear();
             Scanner input = new Scanner(System.in); // So we can get user input.
-            helper.menuClearScreen();// Clear the screen for to much text in terminal.
+            GameHelper.menuClearScreen();// Clear the screen for to much text in terminal.
             System.out.println("""
                                 ------------------------
                                 |  ANIMAl MASTER 2000  |
@@ -45,14 +45,14 @@ public class Game implements Serializable {
             //Switch-cases for the user choice.
             switch (choice){
                 case 1 -> startGame(); // Continue the game
-                case 2 -> helper.gameInfo(); // Game info in text
-                case 3 -> Save.loadGame();
+                case 2 -> GameHelper.gameInfo(); // Game info in text
+                case 3 -> SaveGame.loadGame();
                 case 4 -> {  //Option to exit the game.
                     boolean exitMenu = true;
                     choice = 0;
                     while (exitMenu) {
                         while (choice < 1 || choice > 2) {  // Looping the exit menu until the user makes a
-                            helper.menuClearScreen();     // correct choice. Must press 1 or 2.
+                            GameHelper.menuClearScreen();     // correct choice. Must press 1 or 2.
                             System.out.println("""
                                                 ------------------------
                                                 |      EXIT GAME       |
@@ -67,7 +67,7 @@ public class Game implements Serializable {
                             }                 // Don't want any error message just return to the choices.
                         }
                         if(choice == 1){ // If user press 1 , game will close.
-                            helper.menuClearScreen();
+                            GameHelper.menuClearScreen();
                             System.out.println("Game is closing...");
                             exitMenu = false;
                             startMenu = false;
@@ -90,7 +90,7 @@ public class Game implements Serializable {
         Scanner myScanner = new Scanner(System.in);
         numberOfTurns = 0; // User decide how many turns the game will do before ends.
         while(numberOfTurns < 5 || numberOfTurns > 30) { // Must be 5-30 turns or user wont continue.
-            helper.menuClearScreen(); // Clear text
+            GameHelper.menuClearScreen(); // Clear text
             System.out.println("Enter how many rounds you want the game to be, between 5-30 rounds!");
             System.out.print("Number of rounds: ");
             try { // Handle exceptions.
@@ -103,7 +103,7 @@ public class Game implements Serializable {
         // Ask the user how many players will join the game.
         int numberOfPlayers = 0;
         while(numberOfPlayers < 1 || numberOfPlayers > 4) { // Can only be 1-4 players.
-            helper.menuClearScreen(); // Clear text
+            GameHelper.menuClearScreen(); // Clear text
             System.out.println("You have chosen " + numberOfTurns + " rounds for the game!\n");
             System.out.println("Now enter how many players between 1-4! ");
             System.out.print("Number of players: ");
@@ -115,7 +115,7 @@ public class Game implements Serializable {
             }
 
         }
-        helper.menuClearScreen(); // Lets the users enter their player names.
+        GameHelper.menuClearScreen(); // Lets the users enter their player names.
         System.out.println("\nYou have chosen " + numberOfPlayers + " players for the game!");
         for(int i = 1; i < numberOfPlayers + 1; i++){
             System.out.print("Player " + i + " -> choose your name: ");
@@ -123,7 +123,7 @@ public class Game implements Serializable {
             players.add(new Player(name));
         }
         // Putting out some game info from what the user has entered before.
-        helper.menuClearScreen();
+        GameHelper.menuClearScreen();
         System.out.println("""
                                 ------------------------
                                 |      GAME INFO       |
@@ -137,7 +137,7 @@ public class Game implements Serializable {
         System.out.println("#");
         System.out.println("# " + players.get(0).getName() + " will start the first round!");
         System.out.println("# May the best player win!");
-        helper.menuHelper();
+        GameHelper.menuHelper();
 
         theGame();
 
@@ -165,12 +165,12 @@ public class Game implements Serializable {
                                 #                              #
                                 #   |5| - Save game            #
                                 #   |0| - Exit to main menu.   #""");
-            switch (helper.tryCatch(0,5)) {
+            switch (GameHelper.tryCatch(0,5)) {
                 case 1 -> store.mainMenu(currentPlayer);
                 case 2 -> currentPlayer.breedAnimal(currentPlayer, currentPlayer.animals);
                 case 3 -> currentPlayer.feedAnimal(currentPlayer);
                 case 4 -> realGameMenu = false;
-                case 5 -> Save.saveGame(this);
+                case 5 -> SaveGame.saveGame(this);
                 case 0 -> {
                     realGameMenu = false;
                     setForEach(false);
@@ -206,7 +206,7 @@ public class Game implements Serializable {
             for(Animal animal: deadAnimals){
                 System.out.println(animal.getName() + " is dead.");
             }
-            helper.menuHelper();
+            GameHelper.menuHelper();
         }
     }
     public void checkWinner(){
@@ -214,7 +214,7 @@ public class Game implements Serializable {
         int bestIndex = 0;
         if(players.size() == 0){
             System.out.println("\nThere is no winner, only losers!!");
-            helper.menuHelper();
+            GameHelper.menuHelper();
         }else {
             sellAllAnimals();
             for (int i = 0; i < players.size(); i++) {
@@ -223,7 +223,6 @@ public class Game implements Serializable {
                     bestIndex = i;
                 }
             }
-            helper.menuClearScreen();
             System.out.println("\nThe winner of this game is: " + players.get(bestIndex).getName() + " with: " + players.get(bestIndex).getMoney() + "$!\n");
             for (Player player : players) {
                 System.out.println(player.getName() + ": " + player.getMoney() + "$.");
@@ -231,11 +230,11 @@ public class Game implements Serializable {
             for(Player player: playersWhoLost){
                 System.out.println(player.getName() + ": " + player.getMoney() + "$.");
             }
-            helper.menuHelper();
+            GameHelper.menuHelper();
         }
     }
     public void sellAllAnimals(){
-        helper.menuClearScreen();
+        GameHelper.menuClearScreen();
         System.out.println("Game is now ending... All animals every player have left, have been sold for money..");
         for(Player player: players){
 
@@ -253,22 +252,24 @@ public class Game implements Serializable {
             playersWhoLost.add(currentPlayer);
         }
     }
+    //main game loop
     public void theGame(){
         for (int i = currentTurn; i < numberOfTurns + 1; i++) {
-            for(int j = 0; j < players.size(); j++){
+            for(int j = currentPlayerIndex; j < players.size(); j++){
                 currentPlayer = players.get(j);
                 currentPlayer.setAllBooleanTrue();
-                animalLooseHealth();
                 animalDead();
                 playerMenu();
                 playerLost();
+                animalLooseHealth();
                 if (checkIfFalse()) { break; }
+                currentPlayerIndex++;
             }if(checkIfFalse()){ break; }
+            currentPlayerIndex = 0;
             currentTurn++;
         }
         checkWinner();
     }
-
 
 
 }

@@ -1,19 +1,19 @@
 package com.company;
 
-import java.awt.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GameHelper implements Serializable {
     //Here is where I will put the menus for the start of the game.
     //Will take in information as how the player wants to setup the game.
+
+    public static Scanner input = new Scanner(System.in);
     public GameHelper() {
 
     }
 
     //Method that only contains a text of how the game works.
-    public void gameInfo(){
+    public static void gameInfo(){
         menuClearScreen();
         System.out.println("\t# GAME RULES #\n");
         System.out.println("""
@@ -29,18 +29,18 @@ public class GameHelper implements Serializable {
     }
 
     //Method to clear text in terminal.
-    public void menuClearScreen() {
+    public static void menuClearScreen() {
         System.out.println("\n".repeat(60));
     }
     //Method for stopping the program for moving so the user can read a message and the press enter to move forward.
-    public void menuHelper(){
+    public static void menuHelper(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n");
         System.out.println("Press ENTER to continue:");
         scanner.nextLine();
     }
 
-    public int tryCatch(int num1, int num2){
+    public static int tryCatch(int num1, int num2){
         Scanner input = new Scanner(System.in);
         int choice = -1;
         while (choice < num1 || choice > num2) {
@@ -53,5 +53,6 @@ public class GameHelper implements Serializable {
             }
         }return choice;
     }
+
 }
 

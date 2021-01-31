@@ -6,7 +6,7 @@ public class Main {
        new Game();
        //pet name
         //info om maten
-        //save game message.
+        //SaveGame game message.
         //spara flera filer.
 
     }

@@ -6,6 +6,9 @@ import java.io.*; // serialization/deserialization
 // (objects, array list of objects etc)
 public class Serializer implements Serializable{
 
+
+
+
     static public boolean serialize(String filePath, Object data) {
         try {
             var file = new FileOutputStream(filePath);
@@ -13,9 +16,13 @@ public class Serializer implements Serializable{
             out.writeObject(data);
             out.close();
             file.close();
+            GameHelper.menuClearScreen();
+            System.out.println("Game is saved!");
+            GameHelper.menuHelper();
             return true; // everything went fine
         }
         catch(Exception error){
+            System.out.println("Game did not get saved");
             System.out.println(error);
             return false; // we couldn't complete the serialization
         }
