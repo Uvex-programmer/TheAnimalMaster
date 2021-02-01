@@ -4,15 +4,16 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Game implements Serializable {
-    ArrayList<Player> players = new ArrayList<>();// Must have a list to SaveGame the players in.
-    ArrayList<Player> playersWhoLost = new ArrayList<>();
+    ArrayList<Player> players = new ArrayList<>();// List of players
+    ArrayList<Player> playersWhoLost = new ArrayList<>(); // List of the players who lost
     SaveGame SaveGame = new SaveGame();
-    Player currentPlayer;
-    int numberOfTurns;
-    int currentTurn;
-    int currentPlayerIndex;
+    Player currentPlayer; // Saves current player
+    int numberOfTurns; // Saves the number of rounds to play
+    int currentTurn; // Checks which round in the game it is
+    int currentPlayerIndex; // Checks index of current player
 
     boolean forEach = true; // A boolean I need for breaking a for-loop if player wants to exit for main menu in game.
+    //Menu for the very start of the game
     public Game() {
         SaveGame.setgame(this);
         // Start with main menu when program is running.
@@ -142,8 +143,10 @@ public class Game implements Serializable {
         theGame();
 
     }
+    //Main menu in game
     public void playerMenu(){
         Store store = new Store();
+        Breeding breed = new Breeding();
         boolean realGameMenu = true;
 
         while(realGameMenu) {
@@ -167,7 +170,7 @@ public class Game implements Serializable {
                                 #   |0| - Exit to main menu.   #""");
             switch (GameHelper.tryCatch(0,5)) {
                 case 1 -> store.mainMenu(currentPlayer);
-                case 2 -> currentPlayer.breedAnimal(currentPlayer, currentPlayer.animals);
+                case 2 -> breed.breedAnimal(currentPlayer, currentPlayer.animals);
                 case 3 -> currentPlayer.feedAnimal(currentPlayer);
                 case 4 -> realGameMenu = false;
                 case 5 -> SaveGame.saveGame(this);
@@ -185,6 +188,7 @@ public class Game implements Serializable {
     public void setForEach(boolean forEach) {
         this.forEach = forEach;
     }
+    // Method for animals to lose health
     public void animalLooseHealth(){
         Random random = new Random();
         for(Animal animal: currentPlayer.animals){
@@ -192,6 +196,7 @@ public class Game implements Serializable {
             animal.setHealth(animal.getHealth() - damage);
         }
     }
+    //Method for checking if any animals have died
     public void animalDead(){
         ArrayList<Animal> deadAnimals = new ArrayList<>();
         for (int i = 0; i < currentPlayer.animals.size(); i++){
@@ -209,6 +214,7 @@ public class Game implements Serializable {
             GameHelper.menuHelper();
         }
     }
+    //Method check for winner
     public void checkWinner(){
         int bestScore = 0;
         int bestIndex = 0;
@@ -233,6 +239,7 @@ public class Game implements Serializable {
             GameHelper.menuHelper();
         }
     }
+    //Method for selling all animals when the game ends
     public void sellAllAnimals(){
         GameHelper.menuClearScreen();
         System.out.println("Game is now ending... All animals every player have left, have been sold for money..");
@@ -245,9 +252,12 @@ public class Game implements Serializable {
             }
         }
     }
+    //Method that makes a player lose the game if they have no food/money left
     public void playerLost(){
-        if(currentPlayer.lostGame(currentPlayer)){
-            System.out.println(currentPlayer.getName() + " have no money/food left. You are OUT!");
+        if(currentPlayer.lostGame()){
+            GameHelper.menuClearScreen();
+            System.out.println(currentPlayer.getName() + " -> have no money/food left. You are OUT!");
+            GameHelper.menuHelper();
             players.remove(currentPlayer);
             playersWhoLost.add(currentPlayer);
         }

@@ -2,11 +2,10 @@ package com.company;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
+
 import java.util.Scanner;
 
 public class Player implements Serializable {
-    GameHelper helper = new GameHelper();
     boolean canBuyFood = true;
     boolean canBuyAnimal = true;
     boolean canSellAnimal = true;
@@ -26,12 +25,12 @@ public class Player implements Serializable {
         return name;
     }
     public void sellAnimal(Player player, Animal animal){
-            helper.menuClearScreen();
+            GameHelper.menuClearScreen();
             System.out.println("You want to sell animal: " + animal.getName() + " for " + animal.getCurrentPrice() + "$?");
             System.out.println("""
                     # |1| - Yes.
                     # |2| - No.""");
-            switch (helper.tryCatch(1, 2)) {
+            switch (GameHelper.tryCatch(1, 2)) {
                 case 1 -> {
                     player.addMoney(animal.getCurrentPrice());
                     animals.remove(animal);
@@ -46,92 +45,6 @@ public class Player implements Serializable {
     public void addMoney(int money){
         this.money = this.money + money;
     }
-    public void breedAnimal(Player player, ArrayList<Animal> animals){
-        Scanner input = new Scanner(System.in);
-        Random random = new Random();
-        int animal1 = 0;
-        int animal2 = 0;
-        int chanceOfBreed = random.nextInt(101);
-        ArrayList<Animal> tempList = new ArrayList<>();
-        if(checkIfTrue(canBreed)) {
-            if (animals.size() == 0) {
-                helper.menuClearScreen();
-                System.out.println("You don't have any animals to breed!");
-                helper.menuHelper();
-                return;
-            } else {
-                while (animal1 < 1 || animal1 > animals.size()) {
-                    helper.menuClearScreen();
-                    getPlayerAnimal();
-                    System.out.println("\nChoose your first animal for breeding! Enter number: ");
-                    try {
-                        animal1 = Integer.parseInt(input.nextLine());
-                    } catch (Exception e) {
-                        helper.menuClearScreen();
-                        System.out.println("You must enter a number for an Animal.");
-                        helper.menuHelper();
-                    }
-                }
-                if (listContains(animals.get(animal1 - 1))) {
-                    for (Animal animal : animals) {
-                        if (!(checkLeftForBreed(animals.get(animal1 - 1), animal))) {
-                            tempList.add(animal);
-                        }
-                    }
-                } else {
-                    System.out.println("\n".repeat(20) + "There is no mate for " + animals.get(animal1 - 1).getName() + "!");
-                    helper.menuHelper();
-                    return;
-                }
-                while (animal2 < 1 || animal2 > tempList.size()) {
-                    System.out.println("\n".repeat(20) + "You can pair " + animals.get(animal1 - 1).getName() + " with: \n");
-                    int count = 1;
-                    for (Animal animal : tempList) {
-                        System.out.println("[" + count + "] " + animal.getName() + " --> " + animal.getAnimalType() + " | " + animal.getGender() + " | " + animal.getHealth() + "% health left.");
-                        count++;
-                    }
-                    System.out.println("\nChoose your second animal for breeding! Enter number: ");
-                    try {
-                        animal2 = Integer.parseInt(input.nextLine());
-                    } catch (Exception e) {
-                        System.out.println("\n".repeat(20) + "You must enter a number for an Animal.");
-                        helper.menuHelper();
-                    }
-                }
-            }
-            if (checkForBreed(animals.get(animal1 - 1), tempList.get(animal2 - 1))) {
-                if (chanceOfBreed > 50) {
-
-                    if (animals.get(animal1 - 1).getAnimalType().equals("rat")) {
-                        newAnimal(player, new Rat());
-                    }
-                    if (animals.get(animal1 - 1).getAnimalType().equals("parrot")) {
-                        newAnimal(player, new Parrot());
-                    }
-                    if (animals.get(animal1 - 1).getAnimalType().equals("cat")) {
-                        newAnimal(player, new Cat());
-                    }
-                    if (animals.get(animal1 - 1).getAnimalType().equals("crocodile")) {
-                        newAnimal(player, new Crocodile());
-                    }
-                    if (animals.get(animal1 - 1).getAnimalType().equals("wolf")) {
-                        newAnimal(player, new Wolf());
-                    }
-                } else {
-                    helper.menuClearScreen();
-                    System.out.println("Breeding failed!! ");
-                    player.setAllBooleanFalse();
-                    helper.menuHelper();
-                }
-            } else {
-                helper.menuClearScreen();
-                System.out.println("Can't breed these two animals!");
-                helper.menuHelper();
-            }
-        }else{
-            choiceIsMade();
-        }
-    }
     public boolean listContains(Animal animal1) {
         for (Animal animal : animals) {
             if (animal.getAnimalType().equals(animal1.getAnimalType()) && !animal.getGender().equals(animal1.getGender())) {
@@ -139,24 +52,6 @@ public class Player implements Serializable {
             }
         }
         return false;
-    }
-    public void newAnimal(Player player, Animal animal){
-        Scanner input = new Scanner(System.in);
-        helper.menuClearScreen();
-        System.out.println("\n".repeat(20) + "Your breeding succeeded!");
-        String gender = Animal.Gender.getRandom().toString();
-        System.out.println("You got a  " + animal.getAnimalType() + " that is " + gender + "!");
-        System.out.print("Enter name: ");
-        String animalName = input.nextLine();
-        animal.setName(animalName);
-        animal.setGender(gender);
-        System.out.println("You now got a new " + animal.getAnimalType() + " named: " + animal.getName() + " | " + animal.getGender());
-        player.animals.add(animal);
-        player.setAllBooleanFalse();
-        helper.menuHelper();
-    }
-    public boolean checkLeftForBreed(Animal animal1, Animal animal2){
-        return animal1.getGender().equals(animal2.getGender()) || animal1.getName().equals(animal2.getName()) || !animal1.getAnimalType().equals(animal2.getAnimalType());
     }
     public void getFood() {
         if(foods.size() > 0){
@@ -188,26 +83,26 @@ public class Player implements Serializable {
             if (player.animals.size() > 0 && player.foods.size() > 0) {
                 while (choice1 < 1 || choice1 > animals.size()) {
                     try {
-                        helper.menuClearScreen();
+                        GameHelper.menuClearScreen();
                         getPlayerAnimal();
                         System.out.println("Which animal do you want to feed? Enter name of animal: ");
                         choice1 = Integer.parseInt(input.nextLine());
                     } catch (Exception e) {
-                        helper.menuClearScreen();
+                        GameHelper.menuClearScreen();
                         System.out.println("You must enter a number.");
-                        helper.menuHelper();
+                        GameHelper.menuHelper();
                     }
                 }
                 while (choice2 < 1 || choice2 > foods.size()) {
                     try {
-                        helper.menuClearScreen();
+                        GameHelper.menuClearScreen();
                         getFood();
                         System.out.println("\nWhich food do you wanna use ?");
                         choice2 = Integer.parseInt(input.nextLine());
                     } catch (Exception e) {
-                        helper.menuClearScreen();
+                        GameHelper.menuClearScreen();
                         System.out.println("You must enter a number.");
-                        helper.menuHelper();
+                        GameHelper.menuHelper();
                     }
                 }
 
@@ -220,14 +115,14 @@ public class Player implements Serializable {
                         foods.remove(foods.get(choice2 - 1));
                     }
                 } else {
-                    helper.menuClearScreen();
+                    GameHelper.menuClearScreen();
                     System.out.println("This animal can't eat this food!");
-                    helper.menuHelper();
+                    GameHelper.menuHelper();
                 }
             } else {
-                helper.menuClearScreen();
+                GameHelper.menuClearScreen();
                 System.out.println("There is no food or no animals to feed.");
-                helper.menuHelper();
+                GameHelper.menuHelper();
             }
         }else{
             choiceIsMade();
@@ -235,9 +130,6 @@ public class Player implements Serializable {
     }
     public void getWallet() {
         System.out.println("Wallet: " + this.money + "$");
-    }
-    public boolean checkForBreed(Animal animal1, Animal animal2){
-        return animal1.getAnimalType().equals(animal2.getAnimalType()) && animal1.getGender() != animal2.getGender();
     }
     public void getPlayerInventory(){
         getPlayerAnimal();
@@ -255,6 +147,7 @@ public class Player implements Serializable {
         canSellAnimal = true;
         canFeed = true;
     }
+    //When player made a choice they cant do anything else
     public void setAllBooleanFalse(){
         canBuyAnimal = false;
         canBuyFood = false;
@@ -276,15 +169,15 @@ public class Player implements Serializable {
         this.canFeed = canFeed;
     }
     public void choiceIsMade() {
-        helper.menuClearScreen();
+        GameHelper.menuClearScreen();
         System.out.println("You already made your move this round!");
         System.out.println("Must wait for next round.");
-        helper.menuHelper();
+        GameHelper.menuHelper();
     }
     public boolean checkIfTrue(boolean bool){
         return bool;
     }
-    public boolean lostGame(Player player){
+    public boolean lostGame(){
         return animals.size() <= 0 && getMoney() <= 0;
     }
 }
