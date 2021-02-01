@@ -7,6 +7,8 @@ public class Crocodile extends Animal {
     private String animalType = "crocodile";
     private int currentPrice;
     private int health = 100;
+    private int age = 0;
+    private int maxAge = 12;
 
     public Crocodile() {
     }
@@ -63,26 +65,48 @@ public class Crocodile extends Animal {
             if (this.health >= 100) {
                 this.health = 100;
                 System.out.println("This animal is already at full health! ");
-                helper.menuHelper();
+                GameHelper.menuHelper();
             }
             if (this.health < 100) {
                 if(food instanceof SuperFood){
-                    this.health = this.health + (int) (this.health * 0.20);
-                    if (this.health > 100) {
-                        this.health = 100;
-                        System.out.println(getName() + " -> is now at full health!" + getHealth() + "%");
-                        helper.menuHelper();
+                    if(this.health >= 50)
+                        this.health = this.health + (int) (this.health * 0.20);
+                    if(this.health < 50)
+                        this.health = this.health + 15;
 
-                    }
-                }else{
-                    this.health = this.health + (int) (this.health * 0.10);
-                    if (this.health > 100) {
-                        this.health = 100;
-                        System.out.println(getName() + " -> is now at full health!" + getHealth() + "%");
-                        helper.menuHelper();
-                    }
+                }
+                if(food instanceof Meat){
+                    if(this.health >= 50)
+                        this.health = this.health + (int) (this.health * 0.10);
+                    if(this.health < 50)
+                        this.health = this.health + 10;
+                }
+                if (this.health > 100) {
+                    this.health = 100;
+                    System.out.println(getName() + " -> is now at full health!" + getHealth() + "%");
+                    GameHelper.menuHelper();
                 }
             }
         }
+    }
+
+    @Override
+    public int getAge() {
+        return age;
+    }
+
+    @Override
+    public void setAge(int age) {
+        this.age = this.age + age;
+    }
+
+    @Override
+    public int getMaxAge() {
+        return maxAge;
+    }
+
+    @Override
+    public void setMaxAge(int maxAge) {
+        this.maxAge = maxAge;
     }
 }

@@ -69,7 +69,7 @@ public class Player implements Serializable {
             System.out.println("\n#### Here is your animals ##### ");
             int count = 1;
             for(Animal animal: animals) {
-                System.out.println("[" + count + "] " + animal.getName() + " --> " + animal.getAnimalType() + " | " + animal.getGender() + " | " + animal.getHealth() + "% health left.");
+                System.out.println("[" + count + "] " + animal.getName() + " --> " + animal.getAnimalType() + " | " + animal.getGender() + " | " + animal.getHealth() + "% health left." + "Age: " + animal.getAge());
                 count++;
             }
             System.out.println("############################### ");

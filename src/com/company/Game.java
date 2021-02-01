@@ -198,20 +198,43 @@ public class Game implements Serializable {
     }
     //Method for checking if any animals have died
     public void animalDead(){
-        ArrayList<Animal> deadAnimals = new ArrayList<>();
+        ArrayList<Animal> deadAnimalsOfHealth = new ArrayList<>();
+        ArrayList<Animal> deadAnimalsOfAge = new ArrayList<>();
+
         for (int i = 0; i < currentPlayer.animals.size(); i++){
             if(currentPlayer.animals.get(i).getHealth() < 1){
-                deadAnimals.add(currentPlayer.animals.get(i));
+                deadAnimalsOfHealth.add(currentPlayer.animals.get(i));
+                //System.out.println(currentPlayer.animals.get(i).getName() + " have died from low health.");
                 currentPlayer.animals.remove(currentPlayer.animals.get(i));
                 i--;
+
+            }else if (currentPlayer.animals.get(i).getAge() > currentPlayer.animals.get(i).getMaxAge()){
+                //System.out.println(currentPlayer.animals.get(i).getName() + " have died from old age.");
+                deadAnimalsOfAge.add(currentPlayer.animals.get(i));
+                currentPlayer.animals.remove(currentPlayer.animals.get(i));
+                i--;
+        }
+            if(deadAnimalsOfAge.size() > 0 || deadAnimalsOfHealth.size() > 0) {
+                GameHelper.menuClearScreen();
+                if (deadAnimalsOfHealth.size() > 0) {
+                    System.out.println(currentPlayer.getName() + " you have animals that died from low health");
+                    for (Animal animal : deadAnimalsOfHealth) {
+                        System.out.println(animal.getName() + " died from low health");
+                    }
+                }
+                if (deadAnimalsOfAge.size() > 0) {
+                    System.out.println(currentPlayer.getName() + " you have animals that died from old age");
+                    for (Animal animal : deadAnimalsOfHealth) {
+                        System.out.println(animal.getName() + " died from old age");
+                    }
+                }
+                GameHelper.menuHelper();
             }
         }
-        if(deadAnimals.size() > 0){
-            System.out.println("\n".repeat(20));
-            for(Animal animal: deadAnimals){
-                System.out.println(animal.getName() + " is dead.");
-            }
-            GameHelper.menuHelper();
+    }
+    public void animalAge(){
+        for(Animal animal: currentPlayer.animals){
+            animal.setAge(1);
         }
     }
     //Method check for winner
@@ -268,6 +291,7 @@ public class Game implements Serializable {
             for(int j = currentPlayerIndex; j < players.size(); j++){
                 currentPlayer = players.get(j);
                 currentPlayer.setAllBooleanTrue();
+                animalAge();
                 animalDead();
                 playerMenu();
                 playerLost();

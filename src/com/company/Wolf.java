@@ -2,11 +2,12 @@ package com.company;
 
 public class Wolf extends Animal{
 
-    private int startPrice = 50;
+    private final int startPrice = 50;
     private String name;
     private String animalType = "wolf";
-    private int currentPrice;
     private int health = 100;
+    private int age = 0;
+    private int maxAge = 8;
 
     public Wolf() {
     }
@@ -38,8 +39,7 @@ public class Wolf extends Animal{
     @Override
     public int getCurrentPrice() {
         double tempNumber = ((this.health / 100.0) * this.startPrice);
-        this.currentPrice = (int) tempNumber;
-        return this.currentPrice;
+        return (int) tempNumber;
     }
 
     @Override
@@ -55,24 +55,25 @@ public class Wolf extends Animal{
             if (this.health >= 100) {
                 this.health = 100;
                 System.out.println("This animal is already at full health! ");
-                helper.menuHelper();
+                GameHelper.menuHelper();
             }
             if (this.health < 100) {
                 if(food instanceof SuperFood){
-                    this.health = this.health + (int) (this.health * 0.20);
-                    if (this.health > 100) {
-                        this.health = 100;
-                        System.out.println(getName() + " -> is now at full health!" + getHealth() + "%");
-                        helper.menuHelper();
-
-                    }
+                    if(this.health >= 50)
+                        this.health = this.health + (int) (this.health * 0.20);
+                    if(this.health < 50)
+                        this.health = this.health + 15;
                 }else{
-                    this.health = this.health + (int) (this.health * 0.10);
-                    if (this.health > 100) {
-                        this.health = 100;
-                        System.out.println(getName() + " -> is now at full health!" + getHealth() + "%");
-                        helper.menuHelper();
-                    }
+                    if(this.health >= 50)
+                        this.health = this.health + (int) (this.health * 0.10);
+                    if(this.health < 50)
+                        this.health = this.health + 10;
+                }
+                if (this.health > 100) {
+                    this.health = 100;
+                    System.out.println(getName() + " -> is now at full health!" + getHealth() + "%");
+                    GameHelper.menuHelper();
+
                 }
             }
         }
@@ -86,5 +87,25 @@ public class Wolf extends Animal{
     @Override
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    @Override
+    public int getAge() {
+        return age;
+    }
+
+    @Override
+    public void setAge(int age) {
+        this.age = this.age + age;
+    }
+
+    @Override
+    public int getMaxAge() {
+        return maxAge;
+    }
+
+    @Override
+    public void setMaxAge(int maxAge) {
+        this.maxAge = maxAge;
     }
 }

@@ -10,10 +10,9 @@ public abstract class Animal implements Serializable {
     private Gender gender; // Animal gender.
     private int health; // Animals health.
     private int startPrice; // Starting price for each animal
-    // when you buy in shop.
-    private int currentPrice; // Current price is when animal loose health, value drops.
     private String animalType; // What kind of animal it is.
-    private boolean sick = false;
+    private int age;
+    private int maxAge;
     // Enum class with the genders for the animals.
     public enum Gender{
         FEMALE, MALE;
@@ -59,9 +58,9 @@ public abstract class Animal implements Serializable {
         return startPrice;
     }
     public int getCurrentPrice() {
+        // Current price is when animal loose health, value drops.
         double tempNumber = ((this.health / 100.0) * this.startPrice);
-        this.currentPrice = (int) tempNumber;
-        return this.currentPrice;
+        return (int) tempNumber;
     }
 
     public String getAnimalType() {
@@ -76,21 +75,33 @@ public abstract class Animal implements Serializable {
             if (this.health >= 100) {
                 this.health = 100;
                 System.out.println("This animal is already at full health! ");
-                helper.menuHelper();
+                GameHelper.menuHelper();
             }
             if (this.health < 100) {
                 this.health = this.health + (int) (this.health * 0.10);
                 if (this.health > 100) {
                     this.health = 100;
                     System.out.println(getName() + " -> is now at full health!" + getHealth() + "%");
-                    helper.menuHelper();
+                    GameHelper.menuHelper();
 
                 }
             }
         }
     }
 
-    public void setSick(boolean sick) {
-        this.sick = sick;
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = this.age + age;
+    }
+
+    public int getMaxAge() {
+        return maxAge;
+    }
+
+    public void setMaxAge(int maxAge) {
+        this.maxAge = maxAge;
     }
 }
