@@ -1,15 +1,16 @@
 package com.company;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.Serializable;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class SaveGame implements Serializable {
 
     Game game;
+    String gameName;
 
     public void setgame(Game game){
         this.game = game;
@@ -25,42 +26,50 @@ public class SaveGame implements Serializable {
             if (!f.exists()) {
                 f.mkdir();
             }
-
             Serializer.serialize("SavedGames/" + gameName, game);
-
         } else {
             System.out.println("Filename already exist.");
             System.out.println("[1] Overwrite existing game\n" + "[2] Create a new one");
             if (GameHelper.tryCatch(1, 2) == 1) {
-                Serializer.serialize("gameName/" + gameName, game);
+                Serializer.serialize("SavedGames/" + gameName, game);
             }
         }
     }
     public void loadGame(){
-        String[] saveFiles;
-        File f = new File("SavedGames/");
-        FilenameFilter filter = (f1, name) -> name.endsWith(".ser");
-        saveFiles = f.list(filter);
-        if (saveFiles == null || saveFiles.length == 0) {
-            GameHelper.menuClearScreen();
-            System.out.println("You have no saved games!");
-            GameHelper.menuHelper();
-        } else {
-            GameHelper.menuClearScreen();
-            System.out.println("\nSAVED GAMES\n");
-            int n = 1;
-            for (String save : saveFiles) {
-                System.out.println("[" + n + "] " + save.replaceAll(".ser", ""));
-                n++;
+            File[] savedGames;
+            File f = new File("SavedGames/");
+            FilenameFilter filter = (dir, name) -> {
+                // We only want the files that ends with .ser
+                return name.endsWith(".ser");
+            };
+
+            savedGames = f.listFiles(filter);
+
+            if(savedGames == null){
+                GameHelper.menuClearScreen();
+                System.out.println("You have no saved files");
+                GameHelper.menuHelper();
+
+            }else {
+
+                //Print out the saved game files.
+                GameHelper.menuClearScreen();
+                System.out.println("Choose a game to load!\n");
+                int counter = 1;
+                for (File file : savedGames) {
+                    System.out.println("|" + counter + "| - " + file.getName());
+                    counter++;
+                }
+
+                System.out.println("\n");
+                int choice = GameHelper.tryCatch(1,savedGames.length);
+                String gameFile = savedGames[choice - 1].toString();
+                try{
+                    this.game = (Game) Serializer.deserialize(gameFile);
+                    game.theGame();
+                }catch (Exception error){
+                    System.out.println(error);
+                }
             }
-            int choice = GameHelper.tryCatch(1, saveFiles.length);
-            String saveString = "SavedGames/" + saveFiles[choice - 1];
-            try {
-                this.game = (Game) Serializer.deserialize(saveString);
-                game.theGame();
-            } catch (Exception error) {
-                System.out.println(error);
-            }
-        }
     }
 }
