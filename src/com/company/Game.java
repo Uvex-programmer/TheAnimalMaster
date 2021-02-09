@@ -277,7 +277,7 @@ public class Game implements Serializable {
     }
     //Method that makes a player lose the game if they have no food/money left
     public void playerLost(){
-        if(currentPlayer.lostGame()){
+        if(currentPlayer.checkLostGame()){
             GameHelper.menuClearScreen();
             System.out.println(currentPlayer.getName() + " -> have no money/food left. You are OUT!");
             GameHelper.menuHelper();

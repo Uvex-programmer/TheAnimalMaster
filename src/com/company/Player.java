@@ -69,7 +69,7 @@ public class Player implements Serializable {
             System.out.println("\n#### Here is your animals ##### ");
             int count = 1;
             for(Animal animal: animals) {
-                System.out.println("[" + count + "] " + animal.getName() + " --> " + animal.getAnimalType() + " | " + animal.getGender() + " | " + animal.getHealth() + "% health left." + "Age: " + animal.getAge());
+                System.out.println("[" + count + "] " + animal.getName() + " --> " + animal.getAnimalType() + " | " + animal.getGender() + " | " + animal.getHealth() + "% health." + " Age: " + animal.getAge());
                 count++;
             }
             System.out.println("############################### ");
@@ -177,7 +177,7 @@ public class Player implements Serializable {
     public boolean checkIfTrue(boolean bool){
         return bool;
     }
-    public boolean lostGame(){
+    public boolean checkLostGame(){
         return animals.size() <= 0 && getMoney() <= 0;
     }
 }

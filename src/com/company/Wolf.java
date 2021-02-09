@@ -5,6 +5,7 @@ public class Wolf extends Animal{
     private final int startPrice = 50;
     private String name;
     private String animalType = "wolf";
+    private int currentPrice;
     private int health = 100;
     private int age = 0;
     private int maxAge = 8;
@@ -39,7 +40,9 @@ public class Wolf extends Animal{
     @Override
     public int getCurrentPrice() {
         double tempNumber = ((this.health / 100.0) * this.startPrice);
-        return (int) tempNumber;
+        tempNumber = tempNumber - (this.age * 2);
+        this.currentPrice = (int) tempNumber;
+        return this.currentPrice;
     }
 
     @Override
