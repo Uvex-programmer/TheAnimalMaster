@@ -11,10 +11,10 @@ public class Store implements Serializable {
     public Store() {
     }
 
-    public void mainMenu(Player player){
-        boolean menuChecker3 = true;
-        while(menuChecker3) {
-            GameHelper.menuClearScreen();
+    public void storeMenu(Player player){
+        boolean menuChecker = true;
+        while(menuChecker) {
+            GameHelper.clearScreen();
             player.getPlayerInventory();
             System.out.println("""
                     --------------------------------
@@ -29,18 +29,16 @@ public class Store implements Serializable {
                 case 1 -> buyAnimals(player);
                 case 2 -> buyFoods(player);
                 case 3 -> sellAnimals_Shop(player);
-                case 0 -> menuChecker3 = false;
+                case 0 -> menuChecker = false;
             }
         }
     }
 
     public void buyAnimals(Player player){
 
-        //Store class where the menus for buying animals/foods will be.
-        // Booleans for looping each menu so the user can stay in menus until user choose to leave.
-        boolean menuChecker1 = true;
-        while(menuChecker1) {
-            GameHelper.menuClearScreen();
+        boolean menuChecker = true;
+        while(menuChecker) {
+            GameHelper.clearScreen();
             player.getPlayerInventory();
             System.out.println("""
                     ----------------------------------
@@ -56,51 +54,41 @@ public class Store implements Serializable {
                     #                                #
                     #   |0| - Exit animal store.     #""");
                 switch (GameHelper.tryCatch(0, 5)) {
+
                     case 1 -> {
                         if(player.checkIfTrue(player.canBuyAnimal)){
                             addAnimal(player, new Rat());
-                        }else{
-                            choiceIsMade();
                         }
                     }
                     case 2 -> {
                         if(player.checkIfTrue(player.canBuyAnimal)){
                             addAnimal(player, new Parrot());
-                        }else{
-                            choiceIsMade();
                         }
                     }
                     case 3 -> {
                         if(player.checkIfTrue(player.canBuyAnimal)){
                             addAnimal(player, new Cat());
-                        }else{
-                            choiceIsMade();
                         }
                     }
                     case 4 -> {
                         if(player.checkIfTrue(player.canBuyAnimal)){
                             addAnimal(player, new Crocodile());
-                        }else{
-                            choiceIsMade();
                         }
                     }
                     case 5 -> {
                         if(player.checkIfTrue(player.canBuyAnimal)){
                             addAnimal(player, new Wolf());
-                        }else{
-                            choiceIsMade();
                         }
                     }
-                    case 0 -> menuChecker1 = false;
-
+                    case 0 -> menuChecker = false;
                 }
             }
         }
 
     public void buyFoods(Player player){
-        boolean menuChecker2 = true;
-        while(menuChecker2) {
-            GameHelper.menuClearScreen();
+        boolean menuChecker = true;
+        while(menuChecker) {
+            GameHelper.clearScreen();
             player.getPlayerInventory();
             System.out.println("""
                     ----------------------------------
@@ -116,41 +104,33 @@ public class Store implements Serializable {
                 case 1 -> {
                     if(player.checkIfTrue(player.canBuyFood)){
                         addFood(player, new DryFood());
-                    }else{
-                        choiceIsMade();
                     }
                 }
                 case 2 -> {
                     if(player.checkIfTrue(player.canBuyFood)){
                         addFood(player, new Vegetables());
-                    }else{
-                        choiceIsMade();
                     }
                 }
                 case 3 -> {
                     if(player.checkIfTrue(player.canBuyFood)){
                         addFood(player, new Meat());
-                    }else{
-                        choiceIsMade();
                     }
                 }
                 case 4 -> {
                     if(player.checkIfTrue(player.canBuyFood)){
                         addFood(player, new SuperFood());
-                    }else{
-                        choiceIsMade();
                     }
                 }
-                case 0 -> menuChecker2 = false;
+                case 0 -> menuChecker = false;
             }
         }
     }
 
     public void sellAnimals_Shop(Player player){
-        boolean menuChecker4 = true;
+        boolean menuChecker = true;
         if (player.animals.size() > 0) {
-        while(menuChecker4) {
-                GameHelper.menuClearScreen();
+        while(menuChecker) {
+                GameHelper.clearScreen();
                 player.getWallet();
                 System.out.println("""
                         -----------------------------------
@@ -166,19 +146,17 @@ public class Store implements Serializable {
                 System.out.println("\n# |0| - Exit store.");
                     int index = GameHelper.tryCatch(0, player.animals.size());
                     if (index == 0) {
-                        menuChecker4 = false;
+                        menuChecker = false;
                     } else {
                         if(player.checkIfTrue(player.canSellAnimal)) {
                             sellAnimal(player, player.animals.get(index - 1));
-                            player.setAllBooleanFalse();
+                            player.close_Options();
                             player.setCanSellAnimal(true);
-                        }else{
-                            choiceIsMade();
                         }
                     }
                 }
         }else{
-            GameHelper.menuClearScreen();
+            GameHelper.clearScreen();
             System.out.println("You don't have any animals to sell!");
             GameHelper.menuHelper();
         }
@@ -187,21 +165,21 @@ public class Store implements Serializable {
     public void addAnimal(Player player, Animal animal){
         Scanner input = new Scanner(System.in);
         if(player.getMoney() < animal.getStartPrice()){
-            GameHelper.menuClearScreen();
+            GameHelper.clearScreen();
             System.out.println("You don't have enough money for this animal.");
             GameHelper.menuHelper();
         }else {
-            GameHelper.menuClearScreen();
+            GameHelper.clearScreen();
             System.out.println("You want to buy a " + animal.getAnimalType() + " for " + animal.getStartPrice() + "$?");
             System.out.println("""
                     # |1| - Yes.
                     # |2| - No.""");
             switch (GameHelper.tryCatch(1, 2)) {
                 case 1 -> {
-                    GameHelper.menuClearScreen();
+                    GameHelper.clearScreen();
                     System.out.print("Enter a name for your " + animal.getAnimalType() + ": ");
                     animal.setName(input.nextLine());
-                    GameHelper.menuClearScreen();
+                    GameHelper.clearScreen();
                     System.out.println("Choose gender for your " + animal.getAnimalType() + "!");
                     System.out.println("""
                             # |1| - MALE.
@@ -212,7 +190,7 @@ public class Store implements Serializable {
                     }
                     player.animals.add(animal);
                     player.removeMoney(animal.getStartPrice());
-                    player.setAllBooleanFalse();
+                    player.close_Options();
                     player.setCanBuyAnimal(true);
 
                 }
@@ -224,12 +202,12 @@ public class Store implements Serializable {
 
     public void addFood(Player player, Food food){
         if(player.getMoney() < food.getPrice()){
-            GameHelper.menuClearScreen();
+            GameHelper.clearScreen();
             System.out.println("You don't have enough money to buy this food.");
             GameHelper.menuHelper();
         }else {
             int foodCounter = 0;
-            GameHelper.menuClearScreen();
+            GameHelper.clearScreen();
             System.out.println("You want to buy 1kg of " + food.getName() + " for " + food.getPrice() + "$?");
             System.out.println("""
                     # |1| - Yes.
@@ -248,19 +226,18 @@ public class Store implements Serializable {
                     if (foodCounter == 0) {
                         player.foods.add(food);
                         player.removeMoney(food.getPrice());
-                        player.setAllBooleanFalse();
+                        player.close_Options();
                         player.setCanBuyFood(true);
                     }
 
                 }
-                case 2 -> {
-                }
+                case 2 -> {}
             }
         }
     }
 
     public void sellAnimal(Player player, Animal animal){
-        GameHelper.menuClearScreen();
+        GameHelper.clearScreen();
         System.out.println("You want to sell animal: " + animal.getName() + " for " + animal.getCurrentPrice() + "$?");
         System.out.println("""
                     # |1| - Yes.
@@ -274,12 +251,4 @@ public class Store implements Serializable {
             }
         }
     }
-
-    public void choiceIsMade() {
-        GameHelper.menuClearScreen();
-        System.out.println("You already made your move this round!");
-        System.out.println("Must wait for next round.");
-        GameHelper.menuHelper();
-    }
-
 }

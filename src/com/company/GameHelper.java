@@ -11,7 +11,7 @@ public class GameHelper implements Serializable {
 
 
     public static void gameInfo(){
-        menuClearScreen();
+        clearScreen();
         System.out.println("\t# GAME RULES #\n");
         System.out.println("""
                 * This is a game where the player at the end with\s
@@ -25,7 +25,7 @@ public class GameHelper implements Serializable {
         menuHelper();
     }
 
-    public static void menuClearScreen() {
+    public static void clearScreen() {
         System.out.println("\n".repeat(60));
     }
     //Method for stopping the program for moving so the user can read a message and the press enter to move forward.
@@ -36,10 +36,10 @@ public class GameHelper implements Serializable {
         scanner.nextLine();
     }
 
-    public static int tryCatch(int num1, int num2){
+    public static int tryCatch(int min, int max){
         Scanner input = new Scanner(System.in);
         int choice = -1;
-        while (choice < num1 || choice > num2) {
+        while (choice < min || choice > max) {
             try {
                 System.out.println("Enter an option: ");
                 choice = input.nextInt();
@@ -48,6 +48,30 @@ public class GameHelper implements Serializable {
                 input.next();
             }
         }return choice;
+    }
+
+    static public int menu(String menuName,int min, String ...options){
+        // print the menu
+        GameHelper.clearScreen();
+        System.out.println("-".repeat(50));
+        System.out.println(menuName);
+        System.out.println("-".repeat(50));
+        var counter = 1;
+        for(var option : options){
+            System.out.println(counter + ". " + option);
+            counter++;
+        }
+        System.out.println("-".repeat(50));
+        // wait for the user to make a choice
+        var choice = 0;
+        try {
+            choice = Integer.parseInt(input.nextLine());
+        }
+        catch(Exception ignore){}
+        // if illegal choice show the menu again (recursion)
+        // otherwise return the choice
+        return choice < min || choice > options.length ?
+                menu(menuName,min, options) : choice;
     }
 
 }

@@ -11,7 +11,7 @@ public class Serializer implements Serializable{
             out.writeObject(data);
             out.close();
             file.close();
-            GameHelper.menuClearScreen();
+            GameHelper.clearScreen();
             System.out.println("Game is saved!");
             GameHelper.menuHelper();
         }

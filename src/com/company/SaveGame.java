@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 
 public class SaveGame implements Serializable {
 
+
     Game game;
 
     public void setgame(Game game){
@@ -14,20 +15,26 @@ public class SaveGame implements Serializable {
     public void saveGame(Game game){
 
         File f = new File("SavedGames/");
-        GameHelper.menuClearScreen();
-        System.out.print("Name your saved game file: ");
-        String gameName = (GameHelper.input.nextLine() + ".ser");
+        GameHelper.clearScreen();
+        boolean running = true;
+        while(running) {
+            System.out.print("Name your saved game file: ");
+            String gameName = (GameHelper.input.nextLine() + ".ser");
 
-        if (!Files.exists(Paths.get("SavedGames/" + gameName))) {
-            if (!f.exists()) {
-                f.mkdir();
-            }
-            Serializer.serialize("SavedGames/" + gameName, game);
-        } else {
-            System.out.println("Filename already exist.");
-            System.out.println("[1] Overwrite existing game\n" + "[2] Create a new one");
-            if (GameHelper.tryCatch(1, 2) == 1) {
+            if (!Files.exists(Paths.get("SavedGames/" + gameName))) {
+                if (!f.exists()) {
+                    f.mkdir();
+                }
                 Serializer.serialize("SavedGames/" + gameName, game);
+                running = false;
+            } else {
+                System.out.println("Filename already exist.");
+                System.out.println("[1] Overwrite existing file\n"
+                                 + "[2] Enter new name");
+                if (GameHelper.tryCatch(1, 2) == 1) {
+                    Serializer.serialize("SavedGames/" + gameName, game);
+                    running = false;
+                }
             }
         }
     }
@@ -41,7 +48,7 @@ public class SaveGame implements Serializable {
 
             savedGames = f.listFiles(filter);
 
-        GameHelper.menuClearScreen();
+        GameHelper.clearScreen();
         if(savedGames == null){
             System.out.println("You have no saved files");
                 GameHelper.menuHelper();
@@ -54,9 +61,13 @@ public class SaveGame implements Serializable {
                 System.out.println("|" + counter + "| - " + file.getName());
                 counter++;
             }
+            System.out.println("\n|0| - Back");
 
             System.out.println("\n");
-            int choice = GameHelper.tryCatch(1,savedGames.length);
+            int choice = GameHelper.tryCatch(0,savedGames.length);
+            if(choice == 0){
+                return;
+            }
             String gameFile = savedGames[choice - 1].toString();
             try{
                 this.game = (Game) Serializer.deserialize(gameFile);

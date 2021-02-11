@@ -68,24 +68,24 @@ public class Player implements Serializable {
             if (player.animals.size() > 0 && player.foods.size() > 0) {
                 while (choice1 < 1 || choice1 > animals.size()) {
                     try {
-                        GameHelper.menuClearScreen();
+                        GameHelper.clearScreen();
                         getPlayerAnimal();
                         System.out.println("Which animal do you want to feed? Enter name of animal: ");
                         choice1 = Integer.parseInt(input.nextLine());
                     } catch (Exception e) {
-                        GameHelper.menuClearScreen();
+                        GameHelper.clearScreen();
                         System.out.println("You must enter a number.");
                         GameHelper.menuHelper();
                     }
                 }
                 while (choice2 < 1 || choice2 > foods.size()) {
                     try {
-                        GameHelper.menuClearScreen();
+                        GameHelper.clearScreen();
                         getFood();
                         System.out.println("\nWhich food do you wanna use ?");
                         choice2 = Integer.parseInt(input.nextLine());
                     } catch (Exception e) {
-                        GameHelper.menuClearScreen();
+                        GameHelper.clearScreen();
                         System.out.println("You must enter a number.");
                         GameHelper.menuHelper();
                     }
@@ -94,23 +94,21 @@ public class Player implements Serializable {
                 if (animals.get(choice1 - 1).canEat(foods.get(choice2 - 1))) {
                     animals.get(choice1 - 1).eat(foods.get(choice2 - 1));
                     foods.get(choice2 - 1).setKiloGrams(-1);
-                    player.setAllBooleanFalse();
+                    player.close_Options();
                     player.setCanFeed(true);
                     if (foods.get(choice2 - 1).getKiloGrams() <= 0) {
                         foods.remove(foods.get(choice2 - 1));
                     }
                 } else {
-                    GameHelper.menuClearScreen();
+                    GameHelper.clearScreen();
                     System.out.println("This animal can't eat this food!");
                     GameHelper.menuHelper();
                 }
             } else {
-                GameHelper.menuClearScreen();
+                GameHelper.clearScreen();
                 System.out.println("There is no food or no animals to feed.");
                 GameHelper.menuHelper();
             }
-        }else{
-            choiceIsMade();
         }
     }
 
@@ -128,7 +126,7 @@ public class Player implements Serializable {
         return this.money;
     }
 
-    public void setAllBooleanTrue(){
+    public void open_Options(){
         canBreed = true;
         canBuyAnimal = true;
         canBuyFood = true;
@@ -136,7 +134,7 @@ public class Player implements Serializable {
         canFeed = true;
     }
 
-    public void setAllBooleanFalse(){
+    public void close_Options(){
         canBuyAnimal = false;
         canBuyFood = false;
         canSellAnimal = false;
@@ -160,14 +158,13 @@ public class Player implements Serializable {
         this.canFeed = canFeed;
     }
 
-    public void choiceIsMade() {
-        GameHelper.menuClearScreen();
-        System.out.println("You already made your move this round!");
-        System.out.println("Must wait for next round.");
-        GameHelper.menuHelper();
-    }
-
     public boolean checkIfTrue(boolean bool){
-        return bool;
+        if(!bool) {
+            GameHelper.clearScreen();
+            System.out.println("You have already made your choice this turn!");
+            GameHelper.menuHelper();
+            return false;
+        }
+        return true;
     }
 }
