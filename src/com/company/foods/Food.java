@@ -1,35 +1,32 @@
-package com.company;
+package com.company.foods;
 
-public class Vegetables extends Food {
+import java.io.Serializable;
 
-    private String name = "Vegetables";
-    private int kiloGrams = 1;
-    private int price  = 5;
+public abstract class Food implements Serializable {
 
-    public Vegetables() {
+    protected String name;
+    protected int kiloGrams = 1;
+    protected int price;
+
+    public Food() {
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-    @Override
     public int getKiloGrams() {
         return kiloGrams;
     }
 
-    @Override
     public void setKiloGrams(int kiloGrams) {
         this.kiloGrams = this.kiloGrams + kiloGrams;
     }
 
-    @Override
     public int getPrice() {
         return price;
     }

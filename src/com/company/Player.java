@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.animals.Animal;
+import com.company.foods.Food;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -176,8 +179,5 @@ public class Player implements Serializable {
     }
     public boolean checkIfTrue(boolean bool){
         return bool;
-    }
-    public boolean checkLostGame(){
-        return animals.size() <= 0 && getMoney() <= 0;
     }
 }

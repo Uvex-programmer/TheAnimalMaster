@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.animals.Animal;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -7,10 +9,10 @@ public class Game implements Serializable {
     ArrayList<Player> players = new ArrayList<>();// List of players
     ArrayList<Player> playersWhoLost = new ArrayList<>(); // List of the players who lost
     SaveGame SaveGame = new SaveGame();
-    Player currentPlayer; // Saves current player
-    int numberOfTurns; // Saves the number of rounds to play
-    int currentTurn; // Checks which round in the game it is
-    int currentPlayerIndex; // Checks index of current player
+    Player currentPlayer;
+    int numberOfTurns;
+    int currentTurn;
+    int currentPlayerIndex;
 
     boolean forEach = true; // A boolean I need for breaking a for-loop if player wants to exit for main menu in game.
     //Menu for the very start of the game
@@ -84,7 +86,7 @@ public class Game implements Serializable {
         }
     }
 
-    //Method to start the real game.
+
     public void startGame(){
         currentTurn = 1;
         setForEach(true);
@@ -143,7 +145,7 @@ public class Game implements Serializable {
         theGame();
 
     }
-    //Main menu in game
+
     public void playerMenu(){
         Store store = new Store();
         Breeding breed = new Breeding();
@@ -170,7 +172,7 @@ public class Game implements Serializable {
                                 #   |0| - Exit to main menu.   #""");
             switch (GameHelper.tryCatch(0,5)) {
                 case 1 -> store.mainMenu(currentPlayer);
-                case 2 -> breed.breedAnimal(currentPlayer, currentPlayer.animals);
+                case 2 -> breed.animalBreeding(currentPlayer);
                 case 3 -> currentPlayer.feedAnimal(currentPlayer);
                 case 4 -> realGameMenu = false;
                 case 5 -> SaveGame.saveGame(this);
@@ -201,41 +203,39 @@ public class Game implements Serializable {
         ArrayList<Animal> deadAnimalsOfHealth = new ArrayList<>();
         ArrayList<Animal> deadAnimalsOfAge = new ArrayList<>();
 
-        for (int i = 0; i < currentPlayer.animals.size(); i++){
-            if(currentPlayer.animals.get(i).getHealth() < 1){
+        for (int i = 0; i < currentPlayer.animals.size(); i++) {
+            if (currentPlayer.animals.get(i).getHealth() < 1) {
                 deadAnimalsOfHealth.add(currentPlayer.animals.get(i));
-                //System.out.println(currentPlayer.animals.get(i).getName() + " have died from low health.");
                 currentPlayer.animals.remove(currentPlayer.animals.get(i));
                 i--;
 
-            }else if (currentPlayer.animals.get(i).getAge() > currentPlayer.animals.get(i).getMaxAge()){
-                //System.out.println(currentPlayer.animals.get(i).getName() + " have died from old age.");
+            } else if (currentPlayer.animals.get(i).getAge() > currentPlayer.animals.get(i).getMaxAge()) {
                 deadAnimalsOfAge.add(currentPlayer.animals.get(i));
                 currentPlayer.animals.remove(currentPlayer.animals.get(i));
                 i--;
-        }
-            if(deadAnimalsOfAge.size() > 0 || deadAnimalsOfHealth.size() > 0) {
-                GameHelper.menuClearScreen();
-                if (deadAnimalsOfHealth.size() > 0) {
-                    System.out.println(currentPlayer.getName() + " you have animals that died from low health");
-                    for (Animal animal : deadAnimalsOfHealth) {
-                        System.out.println(animal.getName() + " died from low health");
-                    }
-                }
-                if (deadAnimalsOfAge.size() > 0) {
-                    System.out.println(currentPlayer.getName() + " you have animals that died from old age");
-                    for (Animal animal : deadAnimalsOfHealth) {
-                        System.out.println(animal.getName() + " died from old age");
-                    }
-                }
-                GameHelper.menuHelper();
             }
         }
+        if(deadAnimalsOfAge.size() > 0 || deadAnimalsOfHealth.size() > 0) {
+            GameHelper.menuClearScreen();
+            if (deadAnimalsOfHealth.size() > 0) {
+                System.out.println("\n" + currentPlayer.getName() + " you have animals that died from low health.");
+                for (Animal animal : deadAnimalsOfHealth) {
+                    System.out.println(animal.getName() + " died from low health.");
+                }
+            }
+            if (deadAnimalsOfAge.size() > 0) {
+                System.out.println("\n" + currentPlayer.getName() + " you have animals that died from old age.");
+                for (Animal animal : deadAnimalsOfAge) {
+                    System.out.println(animal.getName() + " died from old age.");
+                }
+            }
+            GameHelper.menuHelper();
+        }
+
     }
     public void animalAge(){
-        for(Animal animal: currentPlayer.animals){
+        for(Animal animal: currentPlayer.animals)
             animal.setAge(1);
-        }
     }
     //Method check for winner
     public void checkWinner(){
@@ -277,7 +277,7 @@ public class Game implements Serializable {
     }
     //Method that makes a player lose the game if they have no food/money left
     public void playerLost(){
-        if(currentPlayer.checkLostGame()){
+        if(currentPlayer.animals.size() <= 0 && currentPlayer.getMoney() <= 0){
             GameHelper.menuClearScreen();
             System.out.println(currentPlayer.getName() + " -> have no money/food left. You are OUT!");
             GameHelper.menuHelper();

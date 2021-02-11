@@ -1,15 +1,10 @@
 package com.company;
 
-import java.io.*; // serialization/deserialization
+import java.io.*;
 
-// A helper class to serialize and deserialize data structure
-// (objects, array list of objects etc)
 public class Serializer implements Serializable{
 
-
-
-
-    static public boolean serialize(String filePath, Object data) {
+    static public void serialize(String filePath, Object data) {
         try {
             var file = new FileOutputStream(filePath);
             var out = new ObjectOutputStream(file);
@@ -19,12 +14,10 @@ public class Serializer implements Serializable{
             GameHelper.menuClearScreen();
             System.out.println("Game is saved!");
             GameHelper.menuHelper();
-            return true; // everything went fine
         }
         catch(Exception error){
             System.out.println("Game did not get saved");
             System.out.println(error);
-            return false; // we couldn't complete the serialization
         }
     }
 
@@ -39,7 +32,7 @@ public class Serializer implements Serializable{
         }
         catch(Exception error){
             System.out.println(error);
-            return false; // we couldn't complete deserialization
+            return false;
         }
     }
 

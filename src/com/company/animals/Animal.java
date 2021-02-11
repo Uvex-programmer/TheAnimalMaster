@@ -1,27 +1,28 @@
-package com.company;
+package com.company.animals;
+
+import com.company.foods.Food;
+import com.company.GameHelper;
 
 import java.io.Serializable;
 
 public abstract class Animal implements Serializable {
 
-    private String name; // What user names them.
-    GameHelper helper = new GameHelper();
+    protected String name;
+    protected Gender gender;
+    protected int health = 100;
+    protected int startPrice;
+    protected String animalType;
+    protected int age = 0;
+    protected int maxAge;
 
-    private Gender gender; // Animal gender.
-    private int health; // Animals health.
-    private int startPrice; // Starting price for each animal
-    private String animalType; // What kind of animal it is.
-    private int age;
-    private int maxAge;
-    // Enum class with the genders for the animals.
     public enum Gender{
         FEMALE, MALE;
-        //A method for getting random gender when breeding. Wont allow user to choose new animals gender.
+
         public static Gender getRandom(){
             return values()[(int) (Math.random() * values().length)];
         }
     }
-    // Empty constructor if needed.
+
     public Animal() {
     }
 
@@ -57,9 +58,10 @@ public abstract class Animal implements Serializable {
     public int getStartPrice() {
         return startPrice;
     }
+
     public int getCurrentPrice() {
-        // Current price is when animal loose health, value drops.
         double tempNumber = ((this.health / 100.0) * this.startPrice);
+        tempNumber = tempNumber - (this.age * 2);
         return (int) tempNumber;
     }
 
@@ -70,6 +72,7 @@ public abstract class Animal implements Serializable {
     public boolean canEat(Food food){
         return true;
     }
+
     public void eat(Food food){
         if(canEat(food)) {
             if (this.health >= 100) {
@@ -101,7 +104,4 @@ public abstract class Animal implements Serializable {
         return maxAge;
     }
 
-    public void setMaxAge(int maxAge) {
-        this.maxAge = maxAge;
-    }
 }

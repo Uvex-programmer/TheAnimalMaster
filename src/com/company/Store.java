@@ -1,17 +1,20 @@
 package com.company;
 
+import com.company.animals.*;
+import com.company.foods.*;
+
 import java.io.Serializable;
 import java.util.Scanner;
 
 public class Store implements Serializable {
-    GameHelper helper = new GameHelper(); // Calling for game helper methods
+
     public Store() {
     }
-    //Method for the main menu in store.
+
     public void mainMenu(Player player){
         boolean menuChecker3 = true;
         while(menuChecker3) {
-            helper.menuClearScreen();
+            GameHelper.menuClearScreen();
             player.getPlayerInventory();
             System.out.println("""
                     --------------------------------
@@ -22,7 +25,7 @@ public class Store implements Serializable {
                     #   |3| - Sell animals         # 
                     #                              # 
                     #   |0| - Exit store.          #""");
-            switch (helper.tryCatch(0, 3)) {
+            switch (GameHelper.tryCatch(0, 3)) {
                 case 1 -> buyAnimals(player);
                 case 2 -> buyFoods(player);
                 case 3 -> sellAnimals(player);
@@ -30,14 +33,14 @@ public class Store implements Serializable {
             }
         }
     }
-    //Method for the animal shop.
+
     public void buyAnimals(Player player){
-        GameHelper helper = new GameHelper();
+
         //Store class where the menus for buying animals/foods will be.
         // Booleans for looping each menu so the user can stay in menus until user choose to leave.
         boolean menuChecker1 = true;
         while(menuChecker1) {
-            helper.menuClearScreen();
+            GameHelper.menuClearScreen();
             player.getPlayerInventory();
             System.out.println("""
                     ----------------------------------
@@ -52,7 +55,7 @@ public class Store implements Serializable {
                     #   |5| - Wolf        50$.       #   
                     #                                #
                     #   |0| - Exit animal store.     #""");
-                switch (helper.tryCatch(0, 5)) {
+                switch (GameHelper.tryCatch(0, 5)) {
                     case 1 -> {
                         if(player.checkIfTrue(player.canBuyAnimal)){
                             addAnimal(player, new Rat());
@@ -93,12 +96,11 @@ public class Store implements Serializable {
                 }
             }
         }
-    //Method for the food shop.
+
     public void buyFoods(Player player){
-        GameHelper helper = new GameHelper();
         boolean menuChecker2 = true;
         while(menuChecker2) {
-            helper.menuClearScreen();
+            GameHelper.menuClearScreen();
             player.getPlayerInventory();
             System.out.println("""
                     ----------------------------------
@@ -110,7 +112,7 @@ public class Store implements Serializable {
                     #   |4| - Super food  1kg   25$. # || All animals can eat -> gives 20% Health.
                     #                                #
                     #   |0| - Exit food store.       #""");
-            switch (helper.tryCatch(0, 4)) {
+            switch (GameHelper.tryCatch(0, 4)) {
                 case 1 -> {
                     if(player.checkIfTrue(player.canBuyFood)){
                         addFood(player, new DryFood());
@@ -143,12 +145,12 @@ public class Store implements Serializable {
             }
         }
     }
-    //Method for selling animals.
+
     public void sellAnimals(Player player){
         boolean menuChecker4 = true;
         if (player.animals.size() > 0) {
         while(menuChecker4) {
-                helper.menuClearScreen();
+                GameHelper.menuClearScreen();
                 player.getWallet();
                 System.out.println("""
                         -----------------------------------
@@ -157,12 +159,12 @@ public class Store implements Serializable {
                         # WHICH ANIMAL DO YOU WANNA SELL? #""");
                 int counter = 1;
                 for (Animal animal : player.animals) {
-                    System.out.println("# |" + counter + "| - " + animal.getName() + " ->" + animal.getGender() +
+                    System.out.println("# |" + counter + "| - " + animal.getName() + " -> " + animal.getGender() +
                             " | " + animal.getAnimalType() + " | " + animal.getHealth() + "% health" + " value: " + animal.getCurrentPrice());
                     counter++;
                 }
                 System.out.println("\n# |0| - Exit store.");
-                    int index = helper.tryCatch(0, player.animals.size());
+                    int index = GameHelper.tryCatch(0, player.animals.size());
                     if (index == 0) {
                         menuChecker4 = false;
                     } else {
@@ -176,34 +178,35 @@ public class Store implements Serializable {
                     }
                 }
         }else{
-            helper.menuClearScreen();
+            GameHelper.menuClearScreen();
             System.out.println("You don't have any animals to sell!");
-            helper.menuHelper();
+            GameHelper.menuHelper();
         }
     }
+
     public void addAnimal(Player player, Animal animal){
         Scanner input = new Scanner(System.in);
         if(player.getMoney() < animal.getStartPrice()){
-            helper.menuClearScreen();
+            GameHelper.menuClearScreen();
             System.out.println("You don't have enough money for this animal.");
-            helper.menuHelper();
+            GameHelper.menuHelper();
         }else {
-            helper.menuClearScreen();
+            GameHelper.menuClearScreen();
             System.out.println("You want to buy a " + animal.getAnimalType() + " for " + animal.getStartPrice() + "$?");
             System.out.println("""
                     # |1| - Yes.
                     # |2| - No.""");
-            switch (helper.tryCatch(1, 2)) {
+            switch (GameHelper.tryCatch(1, 2)) {
                 case 1 -> {
-                    helper.menuClearScreen();
+                    GameHelper.menuClearScreen();
                     System.out.print("Enter a name for your " + animal.getAnimalType() + ": ");
                     animal.setName(input.nextLine());
-                    helper.menuClearScreen();
+                    GameHelper.menuClearScreen();
                     System.out.println("Choose gender for your " + animal.getAnimalType() + "!");
                     System.out.println("""
                             # |1| - MALE.
                             # |2| - FEMALE.""");
-                    switch (helper.tryCatch(1, 2)) {
+                    switch (GameHelper.tryCatch(1, 2)) {
                         case 1 -> animal.setGender("MALE");
                         case 2 -> animal.setGender("FEMALE");
                     }
@@ -218,19 +221,20 @@ public class Store implements Serializable {
             }
         }
     }
+
     public void addFood(Player player, Food food){
         if(player.getMoney() < food.getPrice()){
-            helper.menuClearScreen();
+            GameHelper.menuClearScreen();
             System.out.println("You don't have enough money to buy this food.");
-            helper.menuHelper();
+            GameHelper.menuHelper();
         }else {
             int foodCounter = 0;
-            helper.menuClearScreen();
+            GameHelper.menuClearScreen();
             System.out.println("You want to buy 1kg of " + food.getName() + " for " + food.getPrice() + "$?");
             System.out.println("""
                     # |1| - Yes.
                     # |2| - No.""");
-            switch (helper.tryCatch(1, 2)) {
+            switch (GameHelper.tryCatch(1, 2)) {
                 case 1 -> {
                     if (player.foods.size() > 0) {
                         for (Food food1 : player.foods) {
@@ -254,11 +258,12 @@ public class Store implements Serializable {
             }
         }
     }
+
     public void choiceIsMade() {
-        helper.menuClearScreen();
+        GameHelper.menuClearScreen();
         System.out.println("You already made your move this round!");
         System.out.println("Must wait for next round.");
-        helper.menuHelper();
+        GameHelper.menuHelper();
     }
 
 }

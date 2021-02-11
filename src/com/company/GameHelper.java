@@ -4,15 +4,12 @@ import java.io.Serializable;
 import java.util.Scanner;
 
 public class GameHelper implements Serializable {
-    //Here is where I will put the menus for the start of the game.
-    //Will take in information as how the player wants to setup the game.
 
     public static Scanner input = new Scanner(System.in);
-    public GameHelper() {
 
-    }
+    public GameHelper() {}
 
-    //Method that only contains a text of how the game works.
+
     public static void gameInfo(){
         menuClearScreen();
         System.out.println("\t# GAME RULES #\n");
@@ -28,7 +25,6 @@ public class GameHelper implements Serializable {
         menuHelper();
     }
 
-    //Method to clear text in terminal.
     public static void menuClearScreen() {
         System.out.println("\n".repeat(60));
     }
