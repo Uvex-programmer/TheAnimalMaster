@@ -40,7 +40,7 @@ public class Breeding implements Serializable{
                         GameHelper.menuHelper();
                     }
                 }
-                if (player.listContains(player.animals.get(animal1 - 1))) {
+                if (animalsThatCanMate(player, player.animals.get(animal1 - 1))) {
                     for (Animal animal : player.animals) {
                         if (!(checkLeftForBreed(player.animals.get(animal1 - 1), animal))) {
                             tempList.add(animal);
@@ -162,5 +162,16 @@ public class Breeding implements Serializable{
     public boolean checkLeftForBreed(Animal animal1, Animal animal2){
         return animal1.getGender().equals(animal2.getGender()) || animal1.getName().equals(animal2.getName()) || !animal1.getAnimalType().equals(animal2.getAnimalType());
     }
+
+    public boolean animalsThatCanMate(Player player, Animal animal1) {
+        for (Animal animal : player.animals) {
+            if (animal.getAnimalType().equals(animal1.getAnimalType()) && !animal.getGender().equals(animal1.getGender())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
 }

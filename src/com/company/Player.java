@@ -28,37 +28,12 @@ public class Player implements Serializable {
         return name;
     }
 
-    public void sellAnimal(Player player, Animal animal){
-            GameHelper.menuClearScreen();
-            System.out.println("You want to sell animal: " + animal.getName() + " for " + animal.getCurrentPrice() + "$?");
-            System.out.println("""
-                    # |1| - Yes.
-                    # |2| - No.""");
-            switch (GameHelper.tryCatch(1, 2)) {
-                case 1 -> {
-                    player.addMoney(animal.getCurrentPrice());
-                    animals.remove(animal);
-                }
-                case 2 -> {
-                }
-            }
-    }
-
     public void removeMoney(int money) {
         this.money = this.money - money;
     }
 
     public void addMoney(int money){
         this.money = this.money + money;
-    }
-
-    public boolean listContains(Animal animal1) {
-        for (Animal animal : animals) {
-            if (animal.getAnimalType().equals(animal1.getAnimalType()) && !animal.getGender().equals(animal1.getGender())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public void getFood() {
