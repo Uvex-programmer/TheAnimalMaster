@@ -26,11 +26,6 @@ public abstract class Animal implements Serializable {
     public Animal() {
     }
 
-    public Animal(String name, String gender) {
-        this.name = name;
-        this.gender = Gender.valueOf(gender.toUpperCase());
-    }
-
     public String getName() {
         return name;
     }

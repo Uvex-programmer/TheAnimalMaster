@@ -27,6 +27,7 @@ public class Player implements Serializable {
     public String getName() {
         return name;
     }
+
     public void sellAnimal(Player player, Animal animal){
             GameHelper.menuClearScreen();
             System.out.println("You want to sell animal: " + animal.getName() + " for " + animal.getCurrentPrice() + "$?");
@@ -42,12 +43,15 @@ public class Player implements Serializable {
                 }
             }
     }
+
     public void removeMoney(int money) {
         this.money = this.money - money;
     }
+
     public void addMoney(int money){
         this.money = this.money + money;
     }
+
     public boolean listContains(Animal animal1) {
         for (Animal animal : animals) {
             if (animal.getAnimalType().equals(animal1.getAnimalType()) && !animal.getGender().equals(animal1.getGender())) {
@@ -56,6 +60,7 @@ public class Player implements Serializable {
         }
         return false;
     }
+
     public void getFood() {
         if(foods.size() > 0){
             System.out.println("\n#### Here is your food #### ");
@@ -67,6 +72,7 @@ public class Player implements Serializable {
             System.out.println("###########################\n ");
         }
     }
+
     public void getPlayerAnimal() {
         if(animals.size() > 0){
             System.out.println("\n#### Here is your animals ##### ");
@@ -78,6 +84,7 @@ public class Player implements Serializable {
             System.out.println("############################### ");
         }
     }
+
     public void feedAnimal(Player player) {
         Scanner input = new Scanner(System.in);
         int choice1 = 0;
@@ -131,18 +138,21 @@ public class Player implements Serializable {
             choiceIsMade();
         }
     }
+
     public void getWallet() {
         System.out.println("Wallet: " + this.money + "$");
     }
+
     public void getPlayerInventory(){
         getPlayerAnimal();
         getFood();
         getWallet();
     }
+
     public int getMoney(){
         return this.money;
     }
-    //Calls this method in beginning of each round so player can choose which action to take.
+
     public void setAllBooleanTrue(){
         canBreed = true;
         canBuyAnimal = true;
@@ -150,7 +160,7 @@ public class Player implements Serializable {
         canSellAnimal = true;
         canFeed = true;
     }
-    //When player made a choice they cant do anything else
+
     public void setAllBooleanFalse(){
         canBuyAnimal = false;
         canBuyFood = false;
@@ -162,21 +172,26 @@ public class Player implements Serializable {
     public void setCanBuyFood(boolean canBuyFood) {
         this.canBuyFood = canBuyFood;
     }
+
     public void setCanBuyAnimal(boolean canBuyAnimal) {
         this.canBuyAnimal = canBuyAnimal;
     }
+
     public void setCanSellAnimal(boolean canSellAnimal) {
         this.canSellAnimal = canSellAnimal;
     }
+
     public void setCanFeed(boolean canFeed) {
         this.canFeed = canFeed;
     }
+
     public void choiceIsMade() {
         GameHelper.menuClearScreen();
         System.out.println("You already made your move this round!");
         System.out.println("Must wait for next round.");
         GameHelper.menuHelper();
     }
+
     public boolean checkIfTrue(boolean bool){
         return bool;
     }

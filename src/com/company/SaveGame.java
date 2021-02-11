@@ -3,14 +3,10 @@ package com.company;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 public class SaveGame implements Serializable {
 
     Game game;
-    String gameName;
 
     public void setgame(Game game){
         this.game = game;
@@ -45,31 +41,29 @@ public class SaveGame implements Serializable {
 
             savedGames = f.listFiles(filter);
 
-            if(savedGames == null){
-                GameHelper.menuClearScreen();
-                System.out.println("You have no saved files");
+        GameHelper.menuClearScreen();
+        if(savedGames == null){
+            System.out.println("You have no saved files");
                 GameHelper.menuHelper();
 
-            }else {
-
-                //Print out the saved game files.
-                GameHelper.menuClearScreen();
-                System.out.println("Choose a game to load!\n");
-                int counter = 1;
-                for (File file : savedGames) {
-                    System.out.println("|" + counter + "| - " + file.getName());
-                    counter++;
-                }
-
-                System.out.println("\n");
-                int choice = GameHelper.tryCatch(1,savedGames.length);
-                String gameFile = savedGames[choice - 1].toString();
-                try{
-                    this.game = (Game) Serializer.deserialize(gameFile);
-                    game.theGame();
-                }catch (Exception error){
-                    System.out.println(error);
-                }
+        }else {
+            //Print out the saved game files.
+            System.out.println("Choose a game to load!\n");
+            int counter = 1;
+            for (File file : savedGames) {
+                System.out.println("|" + counter + "| - " + file.getName());
+                counter++;
             }
+
+            System.out.println("\n");
+            int choice = GameHelper.tryCatch(1,savedGames.length);
+            String gameFile = savedGames[choice - 1].toString();
+            try{
+                this.game = (Game) Serializer.deserialize(gameFile);
+                game.theGame();
+            }catch (Exception error){
+                System.out.println(error);
+            }
+        }
     }
 }

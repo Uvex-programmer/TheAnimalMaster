@@ -1,6 +1,6 @@
-package com.company;
+package com.company.animals;
 
-import com.company.animals.Animal;
+import com.company.GameHelper;
 import com.company.foods.*;
 
 public class Rat extends Animal {
