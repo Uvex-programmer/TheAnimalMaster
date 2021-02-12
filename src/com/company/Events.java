@@ -109,13 +109,14 @@ public class Events implements Serializable {
 
     public void beginning_Of_Round(Player player){
         animal_Age(player);
-        animalDisease(player);
+        animalCureDisease(player);
         check_If_Animal_Dead(player);
     }
 
     public void end_Of_Round(Player player, Game game){
         player_Lost(player, game);
         animal_Lose_Health(player);
+        animalDisease(player);
     }
 
     public void animalDisease(Player player){
@@ -125,7 +126,7 @@ public class Events implements Serializable {
             if(number < 20)
                 animal.setSick(true);
         }
-        animalCureDisease(player);
+
     }
 
     public void animalCureDisease(Player player){

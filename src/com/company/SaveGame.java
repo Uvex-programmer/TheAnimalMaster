@@ -41,10 +41,7 @@ public class SaveGame implements Serializable {
     public void loadGame(){
             File[] savedGames;
             File f = new File("SavedGames/");
-            FilenameFilter filter = (dir, name) -> {
-                // We only want the files that ends with .ser
-                return name.endsWith(".ser");
-            };
+            FilenameFilter filter = (dir, name) -> name.endsWith(".ser");
 
             savedGames = f.listFiles(filter);
 
@@ -54,7 +51,6 @@ public class SaveGame implements Serializable {
                 GameHelper.menuHelper();
 
         }else {
-            //Print out the saved game files.
             System.out.println("Choose a game to load!\n");
             int counter = 1;
             for (File file : savedGames) {
