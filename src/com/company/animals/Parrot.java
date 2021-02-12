@@ -7,18 +7,11 @@ import com.company.foods.Vegetables;
 
 public class Parrot extends Animal {
 
-    private final int maxAge;
-    private final String animalType;
-    private final int startPrice;
-    private final int vetCost;
-    private int health;
-
     public Parrot() {
-        this.startPrice = 20;
-        this.maxAge = 4;
-        this.animalType = "parrot";
-        this.vetCost = 5;
-        this.health = 100;
+        startPrice = 20;
+        maxAge = 4;
+        animalType = "parrot";
+        vetCost = 5;
     }
 
     @Override
@@ -65,33 +58,4 @@ public class Parrot extends Animal {
         }
     }
 
-    @Override
-    public int getMaxAge() {
-        return maxAge;
-    }
-
-    @Override
-    public String getAnimalType() {
-        return animalType;
-    }
-
-    @Override
-    public int getStartPrice() {
-        return startPrice;
-    }
-
-    @Override
-    public int getVetCost() {
-        return vetCost;
-    }
-
-    @Override
-    public int getHealth() {
-        return health;
-    }
-
-    @Override
-    public void setHealth(int health) {
-        this.health = health;
-    }
 }

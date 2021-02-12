@@ -5,17 +5,11 @@ import com.company.foods.*;
 
 public class Rat extends Animal {
 
-    private final int maxAge;
-    private final String animalType;
-    private final int startPrice;
-    private final int vetCost;
-    private int health;
-
     public Rat() {
-        this.maxAge = 4;
-        this.startPrice = 10;
-        this.animalType = "rat";
-        this.vetCost = 5;
+        maxAge = 4;
+        startPrice = 10;
+        animalType = "rat";
+        vetCost = 5;
     }
 
     @Override
@@ -55,33 +49,4 @@ public class Rat extends Animal {
         }
     }
 
-    @Override
-    public int getMaxAge() {
-        return maxAge;
-    }
-
-    @Override
-    public String getAnimalType() {
-        return animalType;
-    }
-
-    @Override
-    public int getStartPrice() {
-        return startPrice;
-    }
-
-    @Override
-    public int getVetCost() {
-        return vetCost;
-    }
-
-    @Override
-    public int getHealth() {
-        return health;
-    }
-
-    @Override
-    public void setHealth(int health) {
-        this.health = health;
-    }
 }

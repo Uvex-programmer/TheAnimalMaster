@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public abstract class Food implements Serializable {
 
-    private String name;
-    private int kiloGrams = 1;
-    private int price;
+    protected String name;
+    protected int kiloGrams = 1;
+    protected int price;
 
     public Food() {
     }
@@ -30,4 +30,6 @@ public abstract class Food implements Serializable {
     public int getPrice() {
         return price;
     }
+
+
 }

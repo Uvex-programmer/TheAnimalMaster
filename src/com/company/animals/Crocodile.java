@@ -7,19 +7,11 @@ import com.company.foods.SuperFood;
 
 public class Crocodile extends Animal {
 
-    private final int maxAge;
-    private final String animalType;
-    private final int startPrice;
-    private final int vetCost;
-    private int health;
-
-
     public Crocodile() {
-        this.animalType = "crocodile";
-        this.maxAge = 12;
-        this.startPrice = 40;
-        this.vetCost = 15;
-        this.health = 100;
+        animalType = "crocodile";
+        maxAge = 12;
+        startPrice = 40;
+        vetCost = 15;
     }
 
     @Override
@@ -61,33 +53,4 @@ public class Crocodile extends Animal {
         }
     }
 
-    @Override
-    public int getMaxAge() {
-        return maxAge;
-    }
-
-    @Override
-    public String getAnimalType() {
-        return animalType;
-    }
-
-    @Override
-    public int getStartPrice() {
-        return startPrice;
-    }
-
-    @Override
-    public int getVetCost() {
-        return vetCost;
-    }
-
-    @Override
-    public int getHealth() {
-        return health;
-    }
-
-    @Override
-    public void setHealth(int health) {
-        this.health = health;
-    }
 }
