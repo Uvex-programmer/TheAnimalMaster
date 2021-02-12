@@ -7,11 +7,18 @@ import com.company.foods.SuperFood;
 
 public class Wolf extends Animal {
 
+    private final int maxAge;
+    private final String animalType;
+    private final int startPrice;
+    private final int vetCost;
+    private int health;
+
     public Wolf() {
-        animalType = "wolf";
-        maxAge = 7;
-        startPrice = 50;
-        vetCost = 20;
+        this.animalType = "wolf";
+        this.maxAge = 7;
+        this.startPrice = 50;
+        this.vetCost = 20;
+        this.health = 100;
     }
 
     @Override
@@ -52,4 +59,33 @@ public class Wolf extends Animal {
         }
     }
 
+    @Override
+    public int getMaxAge() {
+        return maxAge;
+    }
+
+    @Override
+    public String getAnimalType() {
+        return animalType;
+    }
+
+    @Override
+    public int getStartPrice() {
+        return startPrice;
+    }
+
+    @Override
+    public int getVetCost() {
+        return vetCost;
+    }
+
+    @Override
+    public int getHealth() {
+        return health;
+    }
+
+    @Override
+    public void setHealth(int health) {
+        this.health = health;
+    }
 }

@@ -7,15 +7,15 @@ import java.io.Serializable;
 
 public abstract class Animal implements Serializable {
 
-    protected String name;
-    protected Gender gender;
-    protected int health = 100;
-    protected int startPrice;
-    protected String animalType;
-    protected int age = 0;
-    protected int maxAge;
-    protected boolean sick = false;
-    protected int vetCost;
+    private String name;
+    private Gender gender;
+    private int health = 100;
+    private int startPrice;
+    private String animalType;
+    private int age = 0;
+    private int maxAge;
+    private boolean sick = false;
+    private int vetCost;
 
     public enum Gender{
         FEMALE, MALE;

@@ -39,11 +39,11 @@ public class SaveGame implements Serializable {
         }
     }
     public void loadGame(){
-            File[] savedGames;
-            File f = new File("SavedGames/");
-            FilenameFilter filter = (dir, name) -> name.endsWith(".ser");
+        File[] savedGames;
+        File f = new File("SavedGames/");
+        FilenameFilter filter = (dir, name) -> name.endsWith(".ser");
 
-            savedGames = f.listFiles(filter);
+        savedGames = f.listFiles(filter);
 
         GameHelper.clearScreen();
         if(savedGames == null){

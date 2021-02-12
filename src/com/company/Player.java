@@ -9,11 +9,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player implements Serializable {
-    boolean canBuyFood = true;
-    boolean canBuyAnimal = true;
-    boolean canSellAnimal = true;
-    boolean canBreed = true;
-    boolean canFeed = true;
+
+    public boolean canFeed, canBreed, canSellAnimal, canBuyAnimal, canBuyFood;
 
     private final String name;
     private int money = 400;

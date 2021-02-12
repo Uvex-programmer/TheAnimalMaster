@@ -7,12 +7,19 @@ import com.company.foods.SuperFood;
 
 public class Cat extends Animal {
 
+    private final int maxAge;
+    private final String animalType;
+    private final int startPrice;
+    private final int vetCost;
+    private int health;
+
 
     public Cat() {
-       maxAge = 7;
-       animalType = "cat";
-       startPrice = 30;
-       vetCost = 10;
+       this.maxAge = 7;
+       this.animalType = "cat";
+       this.startPrice = 30;
+       this.vetCost = 10;
+       this.health = 100;
     }
     @Override
     public void eat(Food food) {
@@ -53,4 +60,33 @@ public class Cat extends Animal {
         return food instanceof SuperFood;
     }
 
+    @Override
+    public int getMaxAge() {
+        return maxAge;
+    }
+
+    @Override
+    public String getAnimalType() {
+        return animalType;
+    }
+
+    @Override
+    public int getStartPrice() {
+        return startPrice;
+    }
+
+    @Override
+    public int getVetCost() {
+        return vetCost;
+    }
+
+    @Override
+    public int getHealth() {
+        return health;
+    }
+
+    @Override
+    public void setHealth(int health) {
+        this.health = health;
+    }
 }

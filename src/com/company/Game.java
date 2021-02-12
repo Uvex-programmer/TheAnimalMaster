@@ -12,10 +12,10 @@ public class Game implements Serializable {
     private Player currentPlayer;
     private final Events event = new Events();
 
-    int numberOfTurns;
-    int currentTurn;
-    int currentPlayerIndex;
-    int numberOfPlayers = 0;
+    private int numberOfTurns;
+    private int currentTurn;
+    private int currentPlayerIndex;
+    private int numberOfPlayers = 0;
 
     boolean forEach = true; // A boolean I need for breaking a for-loop if player wants to exit for main menu in game.
 
