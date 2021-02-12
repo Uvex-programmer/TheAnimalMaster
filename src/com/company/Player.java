@@ -17,6 +17,7 @@ public class Player implements Serializable {
 
     private final String name;
     private int money = 400;
+
     ArrayList<Animal> animals = new ArrayList<>();
     ArrayList<Food> foods = new ArrayList<>();
 

@@ -12,7 +12,7 @@ public class Crocodile extends Animal {
         animalType = "crocodile";
         maxAge = 12;
         startPrice = 40;
-
+        vetCost = 15;
     }
 
     @Override

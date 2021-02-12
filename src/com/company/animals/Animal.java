@@ -14,6 +14,8 @@ public abstract class Animal implements Serializable {
     protected String animalType;
     protected int age = 0;
     protected int maxAge;
+    protected boolean sick = false;
+    protected int vetCost;
 
     public enum Gender{
         FEMALE, MALE;
@@ -24,6 +26,14 @@ public abstract class Animal implements Serializable {
     }
 
     public Animal() {
+    }
+
+    public boolean isSick() {
+        return sick;
+    }
+
+    public void setSick(boolean sick) {
+        this.sick = sick;
     }
 
     public String getName() {
@@ -99,4 +109,7 @@ public abstract class Animal implements Serializable {
         return maxAge;
     }
 
+    public int getVetCost() {
+        return vetCost;
+    }
 }

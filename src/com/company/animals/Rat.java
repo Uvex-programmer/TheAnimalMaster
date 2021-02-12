@@ -9,6 +9,7 @@ public class Rat extends Animal {
         maxAge = 4;
         startPrice = 10;
         animalType = "rat";
+        vetCost = 5;
     }
 
     @Override

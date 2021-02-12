@@ -11,6 +11,7 @@ public class Parrot extends Animal {
         startPrice = 20;
         maxAge = 4;
         animalType = "parrot";
+        vetCost = 5;
     }
 
     @Override

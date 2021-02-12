@@ -50,29 +50,7 @@ public class GameHelper implements Serializable {
         }return choice;
     }
 
-    static public int menu(String menuName,int min, String ...options){
-        // print the menu
-        GameHelper.clearScreen();
-        System.out.println("-".repeat(50));
-        System.out.println(menuName);
-        System.out.println("-".repeat(50));
-        var counter = 1;
-        for(var option : options){
-            System.out.println(counter + ". " + option);
-            counter++;
-        }
-        System.out.println("-".repeat(50));
-        // wait for the user to make a choice
-        var choice = 0;
-        try {
-            choice = Integer.parseInt(input.nextLine());
-        }
-        catch(Exception ignore){}
-        // if illegal choice show the menu again (recursion)
-        // otherwise return the choice
-        return choice < min || choice > options.length ?
-                menu(menuName,min, options) : choice;
-    }
+
 
 }
 

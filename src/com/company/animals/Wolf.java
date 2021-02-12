@@ -11,6 +11,7 @@ public class Wolf extends Animal {
         animalType = "wolf";
         maxAge = 7;
         startPrice = 50;
+        vetCost = 20;
     }
 
     @Override

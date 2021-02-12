@@ -12,6 +12,7 @@ public class Cat extends Animal {
        maxAge = 7;
        animalType = "cat";
        startPrice = 30;
+       vetCost = 10;
     }
     @Override
     public void eat(Food food) {
