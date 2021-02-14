@@ -3,7 +3,6 @@ package com.company.animals;
 import com.company.foods.Food;
 import com.company.GameHelper;
 import com.company.foods.Meat;
-import com.company.foods.SuperFood;
 
 public class Cat extends Animal {
 
@@ -23,12 +22,6 @@ public class Cat extends Animal {
                 GameHelper.menuHelper();
             }
             if (this.health < 100) {
-                if(food instanceof SuperFood){
-                    if(this.health > 50)
-                    this.health = this.health + (int) (this.health * 0.20);
-                    if(this.health < 50)
-                        this.health = this.health + 15;
-                }
                 if(food instanceof Meat){
                     if(this.health > 50)
                         this.health = this.health + (int) (this.health * 0.10);
@@ -47,10 +40,7 @@ public class Cat extends Animal {
 
     @Override
     public boolean canEat(Food food) {
-        if(food instanceof Meat){
-            return true;
-        }
-        return food instanceof SuperFood;
+        return food instanceof Meat;
     }
 
 }

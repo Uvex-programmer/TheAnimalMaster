@@ -14,16 +14,7 @@ public class Rat extends Animal {
 
     @Override
     public boolean canEat(Food food) {
-        if(food instanceof Vegetables){
-            return true;
-        }
-        if(food instanceof Meat){
-            return true;
-        }
-        if(food instanceof DryFood){
-            return true;
-        }
-        return food instanceof SuperFood;
+        return food instanceof DryFood;
     }
 
     @Override
@@ -36,9 +27,9 @@ public class Rat extends Animal {
             }
             if (this.health < 100) {
                 if(this.health >= 50)
-                    this.health = this.health + (int) (this.health * 0.20);
+                    this.health = this.health + (int) (this.health * 0.10);
                 if(this.health < 50)
-                    this.health = this.health + 15;
+                    this.health = this.health + 10;
                 if (this.health > 100) {
                     this.health = 100;
                     System.out.println(getName() + " -> is now at full health!" + getHealth() + "%");

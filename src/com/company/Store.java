@@ -95,12 +95,11 @@ public class Store implements Serializable {
                     |           FOOD STORE           |
                     ----------------------------------
                     #   |1| - Dry food    1kg    5$. # || Can eat: Rat -> gives + 10% Health.
-                    #   |2| - Vegetables  1kg    5$. # || Can eat: Rat, Parrot -> gives + 10% Health.
-                    #   |3| - Meat        1kg   10$. # || Can eat: Cat,Wolf,Crocodile,Rat -> gives + 10% Health.
-                    #   |4| - Super food  1kg   25$. # || All animals can eat -> gives 20% Health.
+                    #   |2| - Vegetables  1kg    5$. # || Can eat: Parrot -> gives + 10% Health.
+                    #   |3| - Meat        1kg   10$. # || Can eat: Cat,Wolf,Crocodile -> gives + 10% Health.                
                     #                                #
                     #   |0| - Exit food store.       #""");
-            switch (GameHelper.tryCatch(0, 4)) {
+            switch (GameHelper.tryCatch(0, 3)) {
                 case 1 -> {
                     if(player.checkIfTrue(player.canBuyFood)){
                         addFood(player, new DryFood());
@@ -116,11 +115,7 @@ public class Store implements Serializable {
                         addFood(player, new Meat());
                     }
                 }
-                case 4 -> {
-                    if(player.checkIfTrue(player.canBuyFood)){
-                        addFood(player, new SuperFood());
-                    }
-                }
+
                 case 0 -> menuChecker = false;
             }
         }

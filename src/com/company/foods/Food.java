@@ -15,10 +15,6 @@ public abstract class Food implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getKiloGrams() {
         return kiloGrams;
     }

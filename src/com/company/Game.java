@@ -35,25 +35,16 @@ public class Game implements Serializable {
                                 #   |2| - Game info    #
                                 #   |3| - Load game    #
                                 #                      #
-                                #   |4| - Exit         #
+                                #   |0| - Exit         #
                                 ------------------------""");
 
-            int choice = 0;
-            while (choice < 1 || choice > 4) {
-                try {
-                    System.out.print("Enter an option: ");
-                    choice = input.nextInt();
-                } catch (Exception e) {
-                    System.out.println("You must enter a number in the menu.");
-                    input.next();
-                }
-            }
+            int choice = GameHelper.tryCatch(0,3);
 
             switch (choice){
                 case 1 -> startMenu();
                 case 2 -> GameHelper.gameInfo();
                 case 3 -> SaveGame.loadGame();
-                case 4 -> {
+                case 0 -> {
                     boolean exitMenu = true;
                     choice = 0;
                     while (exitMenu) {
@@ -98,22 +89,6 @@ public class Game implements Serializable {
         choosePlayerNames();
         gameInfo();
         theGame();
-
-    }
-
-    public int game_Setup(String line, int min, int max){
-        Scanner myScanner = new Scanner(System.in);
-        GameHelper.clearScreen();
-        System.out.println(line);
-
-        int choice = -1;
-        try { // Handle exceptions.
-            choice = myScanner.nextInt();
-        } catch (Exception e) {
-            myScanner.next();
-        }
-        return choice < min || choice > max ?
-                game_Setup(line, min, max) : choice;
 
     }
 
@@ -165,8 +140,9 @@ public class Game implements Serializable {
                                 #   |2| - Breed.               # 
                                 #   |3| - Feed animal.         #
                                 #   |4| - Done, next player.   #
+                                #   |5| - Game Info            #
                                 #                              #
-                                #   |5| - Save game            #
+                                #   |6| - Save game            #
                                 #   |0| - Exit to main menu.   #""");
 
             switch (GameHelper.tryCatch(0,5)) {
@@ -174,7 +150,8 @@ public class Game implements Serializable {
                 case 2 -> breed.animalBreeding(currentPlayer);
                 case 3 -> currentPlayer.feedAnimal(currentPlayer);
                 case 4 -> realGameMenu = false;
-                case 5 -> SaveGame.saveGame(this);
+                case 5 -> GameHelper.gameInfo();
+                case 6 -> SaveGame.saveGame(this);
                 case 0 -> {
                     realGameMenu = false;
                     exitPlayerMenu(false); // So we can break the main loop and get to the main menu at start.
@@ -215,6 +192,22 @@ public class Game implements Serializable {
     //So we can exit main game loop to main menu.
     public void exitPlayerMenu(boolean forEach) {
         this.forEach = forEach;
+    }
+
+    public int game_Setup(String line, int min, int max){
+        Scanner myScanner = new Scanner(System.in);
+        GameHelper.clearScreen();
+        System.out.println(line);
+
+        int choice = -1;
+        try { // Handle exceptions.
+            choice = myScanner.nextInt();
+        } catch (Exception e) {
+            myScanner.next();
+        }
+        return choice < min || choice > max ?
+                game_Setup(line, min, max) : choice;
+
     }
 
 

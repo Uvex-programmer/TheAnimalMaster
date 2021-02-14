@@ -14,7 +14,7 @@ public class SaveGame implements Serializable {
     }
     public void saveGame(Game game){
 
-        File f = new File("SavedGames/");
+        File gameFile = new File("SavedGames/");
         GameHelper.clearScreen();
         boolean running = true;
         while(running) {
@@ -22,8 +22,8 @@ public class SaveGame implements Serializable {
             String gameName = (GameHelper.input.nextLine() + ".ser");
 
             if (!Files.exists(Paths.get("SavedGames/" + gameName))) {
-                if (!f.exists()) {
-                    f.mkdir();
+                if (!gameFile.exists()) {
+                    gameFile.mkdir();
                 }
                 Serializer.serialize("SavedGames/" + gameName, game);
                 running = false;
@@ -47,7 +47,7 @@ public class SaveGame implements Serializable {
 
         GameHelper.clearScreen();
         if(savedGames == null){
-            System.out.println("You have no saved files");
+            System.out.println("You have no saved games");
                 GameHelper.menuHelper();
 
         }else {
