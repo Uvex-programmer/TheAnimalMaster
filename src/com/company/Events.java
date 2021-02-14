@@ -135,27 +135,36 @@ public class Events implements Serializable {
         for(int i = 0; i < player.animals.size(); i++){
             if(player.animals.get(i).isSick()){
                 GameHelper.clearScreen();
+                player.getWallet();
                 System.out.println(player.animals.get(i).getName() + " have suffered from a disease...\n"
-                                                    + " Do you wanna pay the vet to try save " + player.animals.get(i).getName() + "? 50% chance to die..\n"
-                                                    + " It will cost " + player.animals.get(i).getVetCost() + "$.\n\n"
-                                                    + " |1| - Yes \n |2| - No");
+                                                    + "Do you wanna pay the vet to try save " + player.animals.get(i).getName() + "? 50% chance to die..\n"
+                                                    + "It will cost " + player.animals.get(i).getVetCost() + "$.\n\n"
+                                                    + "|1| - Yes \n|2| - No");
                 int choice = GameHelper.tryCatch(1,2);
                 if(choice == 1) {
-                    chanceOfCure = random.nextInt(101);
-                    if (chanceOfCure < 50) {
-                        player.animals.get(i).setSick(false);
+                    if(player.getMoney() >= player.animals.get(i).getVetCost()) {
+                        chanceOfCure = random.nextInt(101);
+                        if (chanceOfCure < 50) {
+                            player.animals.get(i).setSick(false);
+                            GameHelper.clearScreen();
+                            System.out.println(player.animals.get(i).getName() + " got cured from the disease!! Congratulations!");
+                            player.removeMoney(player.animals.get(i).getVetCost());
+                            GameHelper.menuHelper();
+                        } else {
+                            player.animals.get(i).setHealth(0);
+                            GameHelper.clearScreen();
+                            System.out.println(player.animals.get(i).getName() + " didn't survive the disease and have died...");
+                            player.removeMoney(player.animals.get(i).getVetCost());
+                            GameHelper.menuHelper();
+                            player.animals.remove(player.animals.get(i));
+                        }
+                    }else {
                         GameHelper.clearScreen();
-                        System.out.println(player.animals.get(i).getName() + " got cured from the disease!! Congratulations!");
-                        player.removeMoney(player.animals.get(i).getVetCost());
-                        GameHelper.menuHelper();
-                    } else {
-                        player.animals.get(i).setHealth(0);
-                        GameHelper.clearScreen();
+                        System.out.println("Sorry, not enough money for the vet cost.");
                         System.out.println(player.animals.get(i).getName() + " didn't survive the disease and have died...");
-                        player.removeMoney(player.animals.get(i).getVetCost());
                         GameHelper.menuHelper();
-                        player.animals.remove(player.animals.get(i));
                     }
+
                 }
 
                 if(choice == 2) {

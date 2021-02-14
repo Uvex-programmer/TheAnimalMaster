@@ -145,7 +145,7 @@ public class Game implements Serializable {
                                 #   |6| - Save game            #
                                 #   |0| - Exit to main menu.   #""");
 
-            switch (GameHelper.tryCatch(0,5)) {
+            switch (GameHelper.tryCatch(0,6)) {
                 case 1 -> store.storeMenu(currentPlayer);
                 case 2 -> breed.animalBreeding(currentPlayer);
                 case 3 -> currentPlayer.feedAnimal(currentPlayer);
