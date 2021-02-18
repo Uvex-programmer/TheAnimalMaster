@@ -11,7 +11,7 @@ public class Events implements Serializable {
     public Events(){
     }
 
-    public void animal_Lose_Health(Player player){
+    public void animalLoseHealth(Player player){
         Random random = new Random();
         for(Animal animal: player.animals){
             int damage = 10 + random.nextInt(21);
@@ -19,17 +19,15 @@ public class Events implements Serializable {
         }
     }
 
-    public void player_Lost(Player player, Game game){
-        if(player.animals.size() <= 0 && player.getMoney() <= 0){
-            GameHelper.clearScreen();
-            System.out.println(player.getName() + " -> have no money/food left. You are OUT!");
-            GameHelper.menuHelper();
+    public void playerLost(Player player, Game game){
+        if(player.animals.size() <= 0 && player.getMoney() < 10){
+            GameHelper.printText(player.getName() + " -> have not enough money/food left to play. You are OUT!");
             game.players.remove(player);
             game.playersWhoLost.add(player);
         }
     }
 
-    public void sell_All_Animals(Game game){
+    public void sellAllAnimals(Game game){
         GameHelper.clearScreen();
         System.out.println("Game is now ending... All animals every player have left, have been sold for money..");
         for(Player player: game.players){
@@ -42,14 +40,13 @@ public class Events implements Serializable {
         }
     }
 
-    public void check_Winner(Game game){
+    public void checkWinner(Game game){
         int bestScore = 0;
         int bestIndex = 0;
         if(game.players.size() == 0){
-            System.out.println("\nThere is no winner, only losers!!");
-            GameHelper.menuHelper();
+            GameHelper.printText("There is no winner, only losers!!");
         }else {
-            sell_All_Animals(game);
+            sellAllAnimals(game);
             for (int i = 0; i < game.players.size(); i++) {
                 if (game.players.get(i).getMoney() > bestScore) {
                     bestScore = game.players.get(i).getMoney();
@@ -67,12 +64,12 @@ public class Events implements Serializable {
         }
     }
 
-    public void animal_Age(Player player){
+    public void animalAge(Player player){
         for(Animal animal: player.animals)
             animal.setAge(1);
     }
 
-    public void check_If_Animal_Dead(Player player){
+    public void checkIfAnimalDead(Player player){
         ArrayList<Animal> deadAnimalsOfHealth = new ArrayList<>();
         ArrayList<Animal> deadAnimalsOfAge = new ArrayList<>();
 
@@ -107,15 +104,15 @@ public class Events implements Serializable {
 
     }
 
-    public void beginning_Of_Round(Player player){
-        animal_Age(player);
+    public void beginningOfRound(Player player){
+        animalAge(player);
         animalCureDisease(player);
-        check_If_Animal_Dead(player);
+        checkIfAnimalDead(player);
     }
 
-    public void end_Of_Round(Player player, Game game){
-        player_Lost(player, game);
-        animal_Lose_Health(player);
+    public void endOfRound(Player player, Game game){
+        playerLost(player, game);
+        animalLoseHealth(player);
         animalDisease(player);
     }
 
@@ -126,7 +123,6 @@ public class Events implements Serializable {
             if(number < 20)
                 animal.setSick(true);
         }
-
     }
 
     public void animalCureDisease(Player player){
@@ -146,32 +142,22 @@ public class Events implements Serializable {
                         chanceOfCure = random.nextInt(101);
                         if (chanceOfCure < 50) {
                             player.animals.get(i).setSick(false);
-                            GameHelper.clearScreen();
-                            System.out.println(player.animals.get(i).getName() + " got cured from the disease!! Congratulations!");
+                            GameHelper.printText(player.animals.get(i).getName() + " got cured from the disease!! Congratulations!");
                             player.removeMoney(player.animals.get(i).getVetCost());
-                            GameHelper.menuHelper();
                         } else {
                             player.animals.get(i).setHealth(0);
-                            GameHelper.clearScreen();
-                            System.out.println(player.animals.get(i).getName() + " didn't survive the disease and have died...");
+                            GameHelper.printText(player.animals.get(i).getName() + " didn't survive the disease and have died...");
                             player.removeMoney(player.animals.get(i).getVetCost());
-                            GameHelper.menuHelper();
                             player.animals.remove(player.animals.get(i));
                         }
                     }else {
-                        GameHelper.clearScreen();
-                        System.out.println("Sorry, not enough money for the vet cost.");
-                        System.out.println(player.animals.get(i).getName() + " didn't survive the disease and have died...");
-                        GameHelper.menuHelper();
+                        GameHelper.printText("Sorry, not enough money for the vet cost.\n" +
+                                player.animals.get(i).getName() + " didn't survive the disease and have died...\"");
                     }
-
                 }
-
                 if(choice == 2) {
                     player.animals.get(i).setHealth(0);
-                    GameHelper.clearScreen();
-                    System.out.println(player.animals.get(i).getName() + " didn't survive the disease and have died...");
-                    GameHelper.menuHelper();
+                    GameHelper.printText(player.animals.get(i).getName() + " didn't survive the disease and have died...");
                     player.animals.remove(player.animals.get(i));
                     return;
                 }

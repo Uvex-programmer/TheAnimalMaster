@@ -16,112 +16,56 @@ public class Store implements Serializable {
         while(menuChecker) {
             GameHelper.clearScreen();
             player.getPlayerInventory();
-            System.out.println("""
-                    --------------------------------
-                    |          THE STORE           |
-                    --------------------------------
-                    #   |1| - Buy animals          #
-                    #   |2| - Buy foods            #
-                    #   |3| - Sell animals         # 
-                    #                              # 
-                    #   |0| - Exit store.          #""");
-            switch (GameHelper.tryCatch(0, 3)) {
-                case 1 -> buyAnimals(player);
-                case 2 -> buyFoods(player);
-                case 3 -> sellAnimals_Shop(player);
-                case 0 -> menuChecker = false;
+            int choice = GameHelper.printMenu("THE STORE", " Buy animals", " Buy foods", " Sell animals\n",
+                    " Exit store");
+
+            switch (choice) {
+                case 1 -> animalStore(player);
+                case 2 -> foodStore(player);
+                case 3 -> sellAnimalsShop(player);
+                case 4 -> menuChecker = false;
             }
         }
     }
 
-    public void buyAnimals(Player player){
+    public void animalStore(Player player){
 
         boolean menuChecker = true;
         while(menuChecker) {
             GameHelper.clearScreen();
             player.getPlayerInventory();
-            System.out.println("""
-                    ----------------------------------
-                    |          ANIMAL STORE          |
-                    ----------------------------------
-                    # WHICH ANIMAL DO YOU WANNA BUY? #
-                    #                                #
-                    #   |1| - Rat         10$.       #
-                    #   |2| - Parrot      20$.       #
-                    #   |3| - Cat         30$.       # 
-                    #   |4| - Crocodile   40$.       #
-                    #   |5| - Wolf        50$.       #   
-                    #                                #
-                    #   |0| - Exit animal store.     #""");
-                switch (GameHelper.tryCatch(0, 5)) {
+            int choice = GameHelper.printMenu("ANIMAL STORE", " Rat 10$", " Parrot 20$", " Cat 30$",
+                    " Crocodile 40$", " Wolf 50$\n", " Exit animal store");
 
-                    case 1 -> {
-                        if(player.checkIfTrue(player.canBuyAnimal)){
-                            addAnimal(player, new Rat());
-                        }
-                    }
-                    case 2 -> {
-                        if(player.checkIfTrue(player.canBuyAnimal)){
-                            addAnimal(player, new Parrot());
-                        }
-                    }
-                    case 3 -> {
-                        if(player.checkIfTrue(player.canBuyAnimal)){
-                            addAnimal(player, new Cat());
-                        }
-                    }
-                    case 4 -> {
-                        if(player.checkIfTrue(player.canBuyAnimal)){
-                            addAnimal(player, new Crocodile());
-                        }
-                    }
-                    case 5 -> {
-                        if(player.checkIfTrue(player.canBuyAnimal)){
-                            addAnimal(player, new Wolf());
-                        }
-                    }
-                    case 0 -> menuChecker = false;
+                switch (choice) {
+                    case 1 -> addAnimal(player, new Rat());
+                    case 2 -> addAnimal(player, new Parrot());
+                    case 3 -> addAnimal(player, new Cat());
+                    case 4 -> addAnimal(player, new Crocodile());
+                    case 5 -> addAnimal(player, new Wolf());
+                    case 6 -> menuChecker = false;
                 }
             }
         }
 
-    public void buyFoods(Player player){
+    public void foodStore(Player player){
         boolean menuChecker = true;
         while(menuChecker) {
             GameHelper.clearScreen();
             player.getPlayerInventory();
-            System.out.println("""
-                    ----------------------------------
-                    |           FOOD STORE           |
-                    ----------------------------------
-                    #   |1| - Dry food    1kg    5$. # || Can eat: Rat -> gives + 10% Health.
-                    #   |2| - Vegetables  1kg    5$. # || Can eat: Parrot -> gives + 10% Health.
-                    #   |3| - Meat        1kg   10$. # || Can eat: Cat,Wolf,Crocodile -> gives + 10% Health.                
-                    #                                #
-                    #   |0| - Exit food store.       #""");
-            switch (GameHelper.tryCatch(0, 3)) {
-                case 1 -> {
-                    if(player.checkIfTrue(player.canBuyFood)){
-                        addFood(player, new DryFood());
-                    }
-                }
-                case 2 -> {
-                    if(player.checkIfTrue(player.canBuyFood)){
-                        addFood(player, new Vegetables());
-                    }
-                }
-                case 3 -> {
-                    if(player.checkIfTrue(player.canBuyFood)){
-                        addFood(player, new Meat());
-                    }
-                }
+            int choice = GameHelper.printMenu("FOOD STORE", " Dry food 1kg - 5$ (Rat)",
+                    " Vegetables 1kg - 5 $ (Parrot)", " Meat 1kg - 10$ (Cat, Wolf, Crocodile)\n", " Exit food store");
 
-                case 0 -> menuChecker = false;
+            switch (choice) {
+                case 1 -> addFood(player, new DryFood());
+                case 2 -> addFood(player, new Vegetables());
+                case 3 -> addFood(player, new Meat());
+                case 4 -> menuChecker = false;
             }
         }
     }
 
-    public void sellAnimals_Shop(Player player){
+    public void sellAnimalsShop(Player player){
         boolean menuChecker = true;
         if (player.animals.size() > 0) {
         while(menuChecker) {
@@ -145,75 +89,67 @@ public class Store implements Serializable {
                     } else {
                         if(player.checkIfTrue(player.canSellAnimal)) {
                             sellAnimal(player, player.animals.get(index - 1));
-                            player.close_Options();
-                            player.setCanSellAnimal(true);
                         }
                     }
                 }
         }else{
-            GameHelper.clearScreen();
-            System.out.println("You don't have any animals to sell!");
-            GameHelper.menuHelper();
+            GameHelper.printText("You don't have any animals to sell!");
         }
     }
 
     public void addAnimal(Player player, Animal animal){
         Scanner input = new Scanner(System.in);
-        if(player.getMoney() < animal.getStartPrice()){
-            GameHelper.clearScreen();
-            System.out.println("You don't have enough money for this animal.");
-            GameHelper.menuHelper();
-        }else {
-            GameHelper.clearScreen();
-            System.out.println("You want to buy a " + animal.getAnimalType() + " for " + animal.getStartPrice() + "$?");
-            System.out.println("""
-                    # |1| - Yes.
-                    # |2| - No.""");
-            switch (GameHelper.tryCatch(1, 2)) {
-                case 1 -> {
+
+        if(player.checkIfTrue(player.canBuyAnimal)) {
+            if (player.getMoney() < animal.getStartPrice()) {
+                GameHelper.printText("You don't have enough money for this animal.");
+
+            } else {
+
+                int choice = GameHelper.printQuestion("You want to buy a " + animal.getAnimalType() + " for " +
+                        animal.getStartPrice() + "$?", " Yes", " No");
+
+                if (choice == 1) {
                     GameHelper.clearScreen();
                     System.out.print("Enter a name for your " + animal.getAnimalType() + ": ");
                     animal.setName(input.nextLine());
-                    GameHelper.clearScreen();
-                    System.out.println("Choose gender for your " + animal.getAnimalType() + "!");
-                    System.out.println("""
-                            # |1| - MALE.
-                            # |2| - FEMALE.""");
-                    switch (GameHelper.tryCatch(1, 2)) {
-                        case 1 -> animal.setGender("MALE");
-                        case 2 -> animal.setGender("FEMALE");
-                    }
-                    player.animals.add(animal);
-                    player.removeMoney(animal.getStartPrice());
-                    player.close_Options();
-                    player.setCanBuyAnimal(true);
 
-                }
-                case 2 -> {
+                    choice = GameHelper.printQuestion("Choose gender for your " + animal.getAnimalType() + "!",
+                            " Male", " Female");
+
+                    if (choice == 1) animal.setGender("MALE");
+                    if (choice == 2) animal.setGender("FEMALE");
+
+                    afterAnimalPurchase(player, animal);
+
                 }
             }
         }
     }
 
+    private void afterAnimalPurchase(Player player, Animal animal) {
+        player.animals.add(animal);
+        player.removeMoney(animal.getStartPrice());
+        player.closeOptions();
+        player.setCanBuyAnimal(true);
+    }
+
     public void addFood(Player player, Food food){
-        if(player.getMoney() < food.getPrice()){
-            GameHelper.clearScreen();
-            System.out.println("You don't have enough money to buy this food.");
-            GameHelper.menuHelper();
-        }else {
-            int foodCounter = 0;
-            GameHelper.clearScreen();
-            System.out.println("You want to buy 1kg of " + food.getName() + " for " + food.getPrice() + "$?");
-            System.out.println("""
-                    # |1| - Yes.
-                    # |2| - No.""");
-            switch (GameHelper.tryCatch(1, 2)) {
-                case 1 -> {
+        if(player.checkIfTrue(player.canBuyFood)) {
+            if (player.getMoney() < food.getPrice()) {
+                GameHelper.printText("You don't have enough money to buy this food.");
+            } else {
+                int foodCounter = 0;
+                int choice = GameHelper.printQuestion("You want to buy 1kg of " + food.getName() + " for " +
+                        food.getPrice() + "$?", " Yes", " No");
+                if (choice == 1) {
                     if (player.foods.size() > 0) {
                         for (Food food1 : player.foods) {
                             if (food1.getName().equals(food.getName())) {
                                 food1.setKiloGrams(1);
                                 player.removeMoney(food.getPrice());
+                                player.closeOptions();
+                                player.setCanBuyFood(true);
                                 foodCounter++;
                             }
                         }
@@ -221,29 +157,23 @@ public class Store implements Serializable {
                     if (foodCounter == 0) {
                         player.foods.add(food);
                         player.removeMoney(food.getPrice());
-                        player.close_Options();
+                        player.closeOptions();
                         player.setCanBuyFood(true);
                     }
-
                 }
-                case 2 -> {}
             }
         }
     }
 
     public void sellAnimal(Player player, Animal animal){
-        GameHelper.clearScreen();
-        System.out.println("You want to sell animal: " + animal.getName() + " for " + animal.getCurrentPrice() + "$?");
-        System.out.println("""
-                    # |1| - Yes.
-                    # |2| - No.""");
-        switch (GameHelper.tryCatch(1, 2)) {
-            case 1 -> {
-                player.addMoney(animal.getCurrentPrice());
-                player.animals.remove(animal);
-            }
-            case 2 -> {
-            }
+        int choice = GameHelper.printQuestion("You want to sell animal: " + animal.getName() + " for " +
+                animal.getCurrentPrice() + "$?", " Yes", " No");
+        if(choice == 1) {
+            player.addMoney(animal.getCurrentPrice());
+            player.animals.remove(animal);
+            player.closeOptions();
+            player.setCanSellAnimal(true);
+
         }
     }
 }

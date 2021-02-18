@@ -22,9 +22,7 @@ public class Breeding implements Serializable{
         ArrayList<Animal> tempList = new ArrayList<>();
         if(player.checkIfTrue(player.canBreed)) {
             if (player.animals.size() == 0) {
-                GameHelper.clearScreen();
-                System.out.println("You don't have any animals to breed!");
-                GameHelper.menuHelper();
+                GameHelper.printText("You don't have any animals to breed!");
                 return;
             } else {
                 while (animal1 < 1 || animal1 > player.animals.size()) {
@@ -40,8 +38,7 @@ public class Breeding implements Serializable{
                         }
                     }
                 } else {
-                    System.out.println("\n".repeat(60) + "There is no mate for " + player.animals.get(animal1 - 1).getName() + "!");
-                    GameHelper.menuHelper();
+                    GameHelper.printText("There is no mate for " + player.animals.get(animal1 - 1).getName() + "!");
                     return;
                 }
                 while (animal2 < 1 || animal2 > tempList.size()) {
@@ -56,8 +53,7 @@ public class Breeding implements Serializable{
                     try {
                         animal2 = Integer.parseInt(input.nextLine());
                     } catch (Exception e) {
-                        System.out.println("\n".repeat(60) + "You must enter a number for an Animal.");
-                        GameHelper.menuHelper();
+                        GameHelper.printText("You must enter a number for an Animal.");
                     }
                 }
             }
@@ -86,15 +82,11 @@ public class Breeding implements Serializable{
                         for(int i = 0; i < counter; i++) newAnimal(player, new Wolf());
                     }
                 } else {
-                    GameHelper.clearScreen();
-                    System.out.println("Breeding failed!! ");
-                    player.close_Options();
-                    GameHelper.menuHelper();
+                    GameHelper.printText("Breeding failed!! ");
+                    player.closeOptions();
                 }
             } else {
-                GameHelper.clearScreen();
-                System.out.println("Can't breed these two animals!");
-                GameHelper.menuHelper();
+                GameHelper.printText("Can't breed these two animals!");
             }
         }
     }
@@ -111,7 +103,7 @@ public class Breeding implements Serializable{
         animal.setGender(gender);
 
         player.animals.add(animal);
-        player.close_Options();
+        player.closeOptions();
     }
 
     public boolean checkForBreed(Animal animal1, Animal animal2){
@@ -119,7 +111,8 @@ public class Breeding implements Serializable{
     }
 
     public boolean checkLeftForBreed(Animal animal1, Animal animal2){
-        return animal1.getGender().equals(animal2.getGender()) || animal1.getName().equals(animal2.getName()) || !animal1.getAnimalType().equals(animal2.getAnimalType());
+        return animal1.getGender().equals(animal2.getGender()) || animal1.getName().equals(animal2.getName()) ||
+                !animal1.getAnimalType().equals(animal2.getAnimalType());
     }
 
     public boolean animalsThatCanMate(Player player, Animal animal1) {
@@ -143,7 +136,5 @@ public class Breeding implements Serializable{
         GameHelper.menuHelper();
         return counter;
     }
-
-
 
 }

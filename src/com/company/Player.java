@@ -51,7 +51,8 @@ public class Player implements Serializable {
             System.out.println("\n#### Here is your animals ##### ");
             int count = 1;
             for(Animal animal: animals) {
-                System.out.println("[" + count + "] " + animal.getName() + " --> " + animal.getAnimalType() + " | " + animal.getGender() + " | " + animal.getHealth() + "% health." + " Age: " + animal.getAge());
+                System.out.println("[" + count + "] " + animal.getName() + " --> " + animal.getAnimalType() + " | " +
+                        animal.getGender() + " | " + animal.getHealth() + "% health." + " Age: " + animal.getAge());
                 count++;
             }
             System.out.println("############################### ");
@@ -63,6 +64,7 @@ public class Player implements Serializable {
         int choice1 = 0;
         int choice2 = 0;
         if (checkIfTrue(canFeed)) {
+
             if (player.animals.size() > 0 && player.foods.size() > 0) {
                 while (choice1 < 1 || choice1 > animals.size()) {
                     try {
@@ -71,41 +73,36 @@ public class Player implements Serializable {
                         System.out.println("Which animal do you want to feed? Enter name of animal: ");
                         choice1 = Integer.parseInt(input.nextLine());
                     } catch (Exception e) {
-                        GameHelper.clearScreen();
-                        System.out.println("You must enter a number.");
-                        GameHelper.menuHelper();
-                    }
-                }
-                while (choice2 < 1 || choice2 > foods.size()) {
-                    try {
-                        GameHelper.clearScreen();
-                        getFood();
-                        System.out.println("\nWhich food do you wanna use ?");
-                        choice2 = Integer.parseInt(input.nextLine());
-                    } catch (Exception e) {
-                        GameHelper.clearScreen();
-                        System.out.println("You must enter a number.");
-                        GameHelper.menuHelper();
+                        GameHelper.printText("You must enter a number.");
                     }
                 }
 
-                if (animals.get(choice1 - 1).canEat(foods.get(choice2 - 1))) {
-                    animals.get(choice1 - 1).eat(foods.get(choice2 - 1));
-                    foods.get(choice2 - 1).setKiloGrams(-1);
-                    player.close_Options();
-                    player.setCanFeed(true);
-                    if (foods.get(choice2 - 1).getKiloGrams() <= 0) {
-                        foods.remove(foods.get(choice2 - 1));
+                    while (choice2 < 1 || choice2 > foods.size()) {
+                        try {
+                            GameHelper.clearScreen();
+                            getFood();
+                            System.out.println("\nWhich food do you wanna use ?");
+                            choice2 = Integer.parseInt(input.nextLine());
+                        } catch (Exception e) {
+                            GameHelper.printText("You must enter a number.");
+                        }
                     }
-                } else {
-                    GameHelper.clearScreen();
-                    System.out.println("This animal can't eat this food!");
-                    GameHelper.menuHelper();
-                }
+                    Food food = foods.get(choice2 - 1);
+                    Animal animal = animals.get(choice1 - 1);
+
+                    if (animal.canEat(food)) {
+                        animal.eat(food);
+                        food.setKiloGrams(-1);
+                        player.closeOptions();
+                        player.setCanFeed(true);
+                        if (food.getKiloGrams() <= 0) {
+                            foods.remove(food);
+                        }
+                    } else {
+                        GameHelper.printText("This animal can't eat this food!");
+                    }
             } else {
-                GameHelper.clearScreen();
-                System.out.println("There is no food or no animals to feed.");
-                GameHelper.menuHelper();
+                GameHelper.printText("There is no food or no animals to feed.");
             }
         }
     }
@@ -124,7 +121,7 @@ public class Player implements Serializable {
         return this.money;
     }
 
-    public void open_Options(){
+    public void openOptions(){
         canBreed = true;
         canBuyAnimal = true;
         canBuyFood = true;
@@ -132,7 +129,7 @@ public class Player implements Serializable {
         canFeed = true;
     }
 
-    public void close_Options(){
+    public void closeOptions(){
         canBuyAnimal = false;
         canBuyFood = false;
         canSellAnimal = false;
@@ -158,9 +155,7 @@ public class Player implements Serializable {
 
     public boolean checkIfTrue(boolean bool){
         if(!bool) {
-            GameHelper.clearScreen();
-            System.out.println("You have already made your choice this turn!");
-            GameHelper.menuHelper();
+            GameHelper.printText("You have already made your choice this turn!");
             return false;
         }
         return true;

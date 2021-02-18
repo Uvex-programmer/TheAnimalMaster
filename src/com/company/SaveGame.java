@@ -47,9 +47,7 @@ public class SaveGame implements Serializable {
 
         GameHelper.clearScreen();
         if(savedGames == null){
-            System.out.println("You have no saved games");
-                GameHelper.menuHelper();
-
+            GameHelper.printText("You have no saved games");
         }else {
             System.out.println("Choose a game to load!\n");
             int counter = 1;
